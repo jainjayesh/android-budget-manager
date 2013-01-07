@@ -105,4 +105,13 @@ public class EntryPersister extends Persister<EntryDao> {
 	 }
 	 return result;
    }
+
+   public Collection<Entry> getLastCyclesMonthlyEntries() {
+	 try {
+	    return getDao().getLastCyclesMonthlyEntries();
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "getLastCyclesMonthlyEntries failed.", e);
+	 }
+	 return new ArrayList<Entry>();
+   }
 }

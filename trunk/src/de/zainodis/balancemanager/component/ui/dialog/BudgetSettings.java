@@ -1,6 +1,7 @@
 package de.zainodis.balancemanager.component.ui.dialog;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertTrue;
+
 import java.util.Calendar;
 
 import android.app.DatePickerDialog;
@@ -10,6 +11,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,6 +30,7 @@ import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.LogCat;
 import de.zainodis.commons.component.ui.widget.DatePickerFragment;
 import de.zainodis.commons.utils.DateTimeUtils;
+import de.zainodis.commons.utils.StringUtils;
 
 /**
  * Displayed when the application is started. If the application has not yet
@@ -35,22 +40,22 @@ import de.zainodis.commons.utils.DateTimeUtils;
  * @author zainodis
  * 
  */
-public class Settings extends FragmentActivity {
+public class BudgetSettings extends FragmentActivity {
    private static final String TAG = "Settings";
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
-	 setTitle(getString(R.string.settings));
-	 setContentView(R.layout.a_settings);
+	 setTitle(getString(R.string.budget_settings));
+	 setContentView(R.layout.a_budget_settings);
 
 	 // Add listener for adding income
-	 ImageButton button = (ImageButton) findViewById(R.id.a_settings_add_income);
+	 ImageButton button = (ImageButton) findViewById(R.id.a_budget_settings_add_income);
 	 button.setOnClickListener(new OnClickListener() {
 
 	    @Override
 	    public void onClick(View arg0) {
-		  EditEntryDialog dialog = new EditEntryDialog(Settings.this, true,
+		  EditEntryDialog dialog = new EditEntryDialog(BudgetSettings.this, true,
 			   CashflowDirection.INCOME, true);
 		  dialog.setOnDismissListener(onEditCompleted);
 		  dialog.show();
@@ -58,12 +63,12 @@ public class Settings extends FragmentActivity {
 	 });
 
 	 // Add listener for adding expenses
-	 button = (ImageButton) findViewById(R.id.a_settings_add_expense);
+	 button = (ImageButton) findViewById(R.id.a_budget_settings_add_expense);
 	 button.setOnClickListener(new OnClickListener() {
 
 	    @Override
 	    public void onClick(View arg0) {
-		  EditEntryDialog dialog = new EditEntryDialog(Settings.this, true,
+		  EditEntryDialog dialog = new EditEntryDialog(BudgetSettings.this, true,
 			   CashflowDirection.EXPENSE, true);
 		  dialog.setOnDismissListener(onEditCompleted);
 		  dialog.show();
@@ -81,7 +86,6 @@ public class Settings extends FragmentActivity {
 	    LogCat.i(TAG, "Loaded existing budget cycle beginning.");
 	    updateBudgetCycle(cycle);
 	 }
-	 updateBudgetCalculation();
 
    }
 
@@ -121,8 +125,8 @@ public class Settings extends FragmentActivity {
    private void updateBudgetCalculation() {
 
 	 // Append existing incomes and expenses to their respective layouts
-	 LinearLayout incomeLayout = (LinearLayout) findViewById(R.id.a_settings_income_block);
-	 LinearLayout expenseLayout = (LinearLayout) findViewById(R.id.a_settings_expenses_block);
+	 LinearLayout incomeLayout = (LinearLayout) findViewById(R.id.a_budget_settings_income_block);
+	 LinearLayout expenseLayout = (LinearLayout) findViewById(R.id.a_budget_settings_expenses_block);
 
 	 // Cleanup old fragments
 	 incomeLayout.removeAllViews();
@@ -153,21 +157,52 @@ public class Settings extends FragmentActivity {
 		  expenseLayout.addView(entryLayout);
 	    }
 	 }
-	 TextView budgetAvailable = (TextView) findViewById(R.id.a_settings_available_budget);
+	 TextView budgetAvailable = (TextView) findViewById(R.id.a_budget_settings_available_budget);
 	 budgetAvailable.setText(new EntryPersister().getCurrentBudget().format());
    }
 
    private void updateBudgetCycle(BudgetCycle cycle) {
-	 Button beginning = (Button) findViewById(R.id.a_settings_cycle_beginning);
-	 beginning.setText(DateTimeUtils.format(DateTimeUtils.toCalendar(cycle.getStart()),
-		  DateTimeUtils.DATE_FORMAT));
-	 // Prevent the user from changing this setting
-	 beginning.setEnabled(false);
-	 // So the writing is visible
-	 beginning.setTextColor(Color.LTGRAY);
-	 TextView end = (TextView) findViewById(R.id.a_settings_cycle_end);
-	 end.setText(DateTimeUtils.format(DateTimeUtils.toCalendar(cycle.getEnd()),
-		  DateTimeUtils.DATE_FORMAT));
+	 Button beginning = (Button) findViewById(R.id.a_budget_settings_cycle_beginning);
+	 TextView end = (TextView) findViewById(R.id.a_budget_settings_cycle_end);
+	 if (cycle == null) {
+	    // Reset the fields
+	    beginning.setText(StringUtils.EMPTY);
+	    end.setText(getString(R.string.unknown));
+	    // Let the user edit the budget cycle beginning
+	    beginning.setEnabled(true);
+	 } else {
+	    beginning.setText(DateTimeUtils.format(DateTimeUtils.toCalendar(cycle.getStart()),
+			DateTimeUtils.DATE_FORMAT));
+	    // Prevent the user from changing this setting
+	    beginning.setEnabled(false);
+	    // So the writing is visible
+	    beginning.setTextColor(Color.LTGRAY);
+	    end.setText(DateTimeUtils.format(DateTimeUtils.toCalendar(cycle.getEnd()),
+			DateTimeUtils.DATE_FORMAT));
+	 }
+	 // Update the budget cycle amounts
+	 updateBudgetCalculation();
+   }
+
+   @Override
+   public boolean onCreateOptionsMenu(Menu menu) {
+	 MenuInflater inflater = getMenuInflater();
+	 inflater.inflate(R.menu.m_budget_settings, menu);
+	 return true;
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+	 switch (item.getItemId()) {
+	 case R.id.m_budget_settings_reset_settings:
+	    // Close current Budget cycle...
+	    new BudgetCyclePersister().endOngoingCycles();
+	    // Update the budget field so it can be edited again
+	    updateBudgetCycle(null);
+	    return true;
+	 default:
+	    return super.onOptionsItemSelected(item);
+	 }
    }
 
 }

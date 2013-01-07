@@ -1,8 +1,12 @@
 package de.zainodis.balancemanager.model.persistence;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
@@ -34,4 +38,26 @@ public class EntryDao extends BaseDaoImpl<Entry, Long> {
 	 super(connectionSource, tableConfig);
    }
 
+   /**
+    * Checks which was the last budget cycle and returns all monthly entries
+    * associated with it.
+    * 
+    * @return a collection of {@link Entry}s which are linked to the last active
+    *         budget cycle; an empty list if no matches were found.
+    * @throws SQLException
+    *            on error.
+    */
+   public Collection<Entry> getLastCyclesMonthlyEntries() throws SQLException {
+	 // First get the last budget cycle's id
+	 long lastCycleId = new BudgetCyclePersister().getLastCyclesId();
+	 if (lastCycleId > 0) {
+	    QueryBuilder<Entry, Long> builder = queryBuilder();
+	    builder.where().eq(FK_BUDGET_CYCLE_ID_FIELD, lastCycleId);
+	    List<Entry> result = query(builder.prepare());
+	    if (result != null) {
+		  return result;
+	    }
+	 }
+	 return new ArrayList<Entry>();
+   }
 }

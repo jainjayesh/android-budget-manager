@@ -35,7 +35,7 @@ public class WelcomeScreen extends Activity {
 	 super.onResume();
 
 	 waitSpinner.dismiss();
-	 startActivity(new Intent(this, Settings.class));
+	 startActivity(new Intent(this, BudgetSettings.class));
 	 finish();
    }
 }

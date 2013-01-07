@@ -3,6 +3,8 @@ package de.zainodis.balancemanager.model.persistence;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.persistence.Persister;
 import de.zainodis.commons.LogCat;
@@ -26,7 +28,7 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
     */
    public boolean save(BudgetCycle newCycle) {
 	 try {
-	    return getDao().create(newCycle) == 1;
+	    return getDao().save(newCycle);
 	 } catch (SQLException e) {
 	    LogCat.e(TAG, "save failed.", e);
 	    return false;
@@ -84,5 +86,30 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
 	 } catch (SQLException e) {
 	    LogCat.e(TAG, "endOngoingCycles failed.", e);
 	 }
+   }
+
+   /**
+    * 
+    * @return the id of the last budget cycle; zero if there was none or an
+    *         error occurred.
+    */
+   public long getLastCyclesId() {
+	 try {
+	    BudgetCycleDao dao = getDao();
+	    QueryBuilder<BudgetCycle, Long> builder = dao.queryBuilder();
+	    builder.orderBy(BudgetCycleDao.ID_FIELD, false);
+	    builder.where().eq(BudgetCycleDao.HAS_ENDED_FIELD, true);
+	    builder.limit(1L);
+	    BudgetCycle lastCycle = dao.queryForFirst(builder.prepare());
+
+	    if (lastCycle != null) {
+		  return lastCycle.getId();
+	    }
+
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "getLastCyclesId failed.", e);
+	 }
+
+	 return 0;
    }
 }

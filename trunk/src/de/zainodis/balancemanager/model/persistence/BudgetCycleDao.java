@@ -1,6 +1,8 @@
 package de.zainodis.balancemanager.model.persistence;
 
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
@@ -10,6 +12,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import de.zainodis.balancemanager.model.BudgetCycle;
+import de.zainodis.balancemanager.model.Entry;
 
 /**
  * Persists an {@link BudgetCycle} to the database.
@@ -35,27 +38,43 @@ public class BudgetCycleDao extends BaseDaoImpl<BudgetCycle, Long> {
    }
 
    /**
+    * If there is an active cycle and it has reached it's end, a new cycle is
+    * automatically created.
+    * 
     * @return the id of the currently active cycle; zero if there currently is
     *         no active cycle.
     * @throws SQLException
     *            on error.
     */
    public long getActiveCyclesId() throws SQLException {
-	 QueryBuilder<BudgetCycle, Long> builder = queryBuilder();
-	 builder.where().eq(HAS_ENDED_FIELD, false);
-	 List<BudgetCycle> result = query(builder.prepare());
-	 if (result != null && result.size() >= 1) {
-	    return result.get(0).getId();
-	 }
-	 return 0;
+	 BudgetCycle cycle = getActiveCycle();
+	 return cycle != null ? cycle.getId() : 0;
    }
 
+   /**
+    * If there is an active cycle and it has reached it's end, a new cycle is
+    * automatically created.
+    * 
+    * @return the currently active cycle; null if there is none.
+    * @throws SQLException
+    *            on error.
+    */
    public BudgetCycle getActiveCycle() throws SQLException {
 	 QueryBuilder<BudgetCycle, Long> builder = queryBuilder();
 	 builder.where().eq(HAS_ENDED_FIELD, false);
 	 List<BudgetCycle> result = query(builder.prepare());
 	 if (result != null && result.size() == 1) {
-	    return result.get(0);
+	    Date end = result.get(0).getEnd();
+	    if (end.getTime() < new Date().getTime()) {
+		  // If the cycle has reached it's end, create a new one immediately
+		  endOngoingCycles();
+		  save(new BudgetCycle(end));
+		  // Recursive call to make up for a longer period of absence
+		  return getActiveCycle();
+	    } else {
+		  // Return the currently active cycle
+		  return result.get(0);
+	    }
 	 }
 	 return null;
    }
@@ -71,5 +90,21 @@ public class BudgetCycleDao extends BaseDaoImpl<BudgetCycle, Long> {
 	 builder.updateColumnValue(HAS_ENDED_FIELD, true);
 	 builder.setWhere(builder.where().eq(HAS_ENDED_FIELD, false));
 	 return update(builder.prepare());
+   }
+
+   public boolean save(BudgetCycle newCycle) throws SQLException {
+	 boolean result = create(newCycle) == 1;
+	 if (result) {
+	    EntryPersister persister = new EntryPersister();
+	    // Add all monthly entries (from last month) to the new cycle
+	    Collection<Entry> monthlyEntries = persister.getLastCyclesMonthlyEntries();
+	    for (Entry entry : monthlyEntries) {
+		  // Create a new one so it's id is reset
+		  Entry newEntry = new Entry(entry.getCashflowDirection(), entry.getGroup(),
+			   entry.isMonthly(), entry.getAmount());
+		  persister.save(newEntry);
+	    }
+	 }
+	 return result;
    }
 }

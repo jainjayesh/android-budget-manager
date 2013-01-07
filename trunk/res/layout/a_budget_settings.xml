@@ -16,7 +16,7 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/a_settings_cycle_beginning"
+            android:id="@+id/a_budget_settings_cycle_beginning"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -31,10 +31,11 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/a_settings_cycle_end"
+            android:id="@+id/a_budget_settings_cycle_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:text="@string/unknown"
             android:textSize="18sp" />
 
         <include layout="@layout/w_divider" />
@@ -47,7 +48,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/a_settings_available_budget"
+            android:id="@+id/a_budget_settings_available_budget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -68,7 +69,7 @@
             android:orientation="horizontal" >
 
             <include
-                android:id="@+id/a_settings_add_income"
+                android:id="@+id/a_budget_settings_add_income"
                 layout="@layout/w_add" />
 
             <TextView
@@ -80,7 +81,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/a_settings_income_block"
+            android:id="@+id/a_budget_settings_income_block"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
@@ -100,7 +101,7 @@
             android:orientation="horizontal" >
 
             <include
-                android:id="@+id/a_settings_add_expense"
+                android:id="@+id/a_budget_settings_add_expense"
                 layout="@layout/w_add" />
 
             <TextView
@@ -112,7 +113,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/a_settings_expenses_block"
+            android:id="@+id/a_budget_settings_expenses_block"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".component.ui.dialog.Settings"
+            android:name="de.zainodis.balancemanager.component.ui.dialog.BudgetSettings"
             android:exported="false"
             android:noHistory="true" >
             <intent-filter>
