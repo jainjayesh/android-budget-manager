@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/group"
+            android:textSize="20sp" />
+
+        <de.zainodis.commons.component.ui.widget.AutoShowAutoCompleteTextView
+            android:id="@+id/d_edit_entry_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/amount"
+            android:textSize="20sp" />
+
+        <de.zainodis.commons.component.ui.widget.CurrencyField
+            android:id="@+id/d_edit_entry_amount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/d_edit_entry_is_monthly"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/monthly_amount"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="@string/cashflow_direction"
+            android:textSize="20sp" />
+
+        <Spinner
+            android:id="@+id/d_edit_entry_cashflow_direction"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:entries="@array/casfhlow_direction_suggestions"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2" >
+
+            <include
+                android:id="@+id/d_edit_entry_save"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                layout="@layout/w_save" />
+
+            <include
+                android:id="@+id/d_edit_entry_cancel"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                layout="@layout/w_cancel" >
+            </include>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
