@@ -5,8 +5,7 @@ import static junit.framework.Assert.assertTrue;
 import java.util.Calendar;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -55,10 +54,7 @@ public class BudgetSettings extends FragmentActivity {
 
 	    @Override
 	    public void onClick(View arg0) {
-		  EditEntryDialog dialog = new EditEntryDialog(BudgetSettings.this, true,
-			   CashflowDirection.INCOME, true);
-		  dialog.setOnDismissListener(onEditCompleted);
-		  dialog.show();
+		  startEditEntryDialog(true, CashflowDirection.INCOME, true);
 	    }
 	 });
 
@@ -68,13 +64,35 @@ public class BudgetSettings extends FragmentActivity {
 
 	    @Override
 	    public void onClick(View arg0) {
-		  EditEntryDialog dialog = new EditEntryDialog(BudgetSettings.this, true,
-			   CashflowDirection.EXPENSE, true);
-		  dialog.setOnDismissListener(onEditCompleted);
-		  dialog.show();
+		  startEditEntryDialog(true, CashflowDirection.EXPENSE, true);
 	    }
 	 });
 
+   }
+
+   protected void startEditEntryDialog(boolean isMonthly, CashflowDirection direction,
+	    boolean disableEditing) {
+	 Intent intent = new Intent(BudgetSettings.this, EditEntryDialog.class);
+	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getLocalized());
+	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, isMonthly);
+	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, disableEditing);
+
+	 startActivityForResult(intent, EditEntryDialog.REQUEST_CODE_EDIT_ENTRY);
+   }
+
+   @Override
+   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	 super.onActivityResult(requestCode, resultCode, data);
+	 switch (requestCode) {
+	 case EditEntryDialog.REQUEST_CODE_EDIT_ENTRY:
+	    switch (resultCode) {
+	    case RESULT_OK:
+		  // The user has modified the budget
+		  updateBudgetCalculation();
+		  break;
+	    }
+	    break;
+	 }
    }
 
    @Override
@@ -111,14 +129,6 @@ public class BudgetSettings extends FragmentActivity {
 	    assertTrue("Failed to save new budget cycle.", new BudgetCyclePersister().save(newCycle));
 
 	    updateBudgetCycle(newCycle);
-	 }
-   };
-
-   private final OnDismissListener onEditCompleted = new OnDismissListener() {
-
-	 @Override
-	 public void onDismiss(DialogInterface dialog) {
-	    updateBudgetCalculation();
 	 }
    };
 

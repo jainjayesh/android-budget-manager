@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- Displays the cashflow direction -->
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY" />
+
+    <!-- Displays the entry details -->
+
+    <TextView
+        android:id="@+id/w_table_row_group_header_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_span="2"
+        android:background="@color/light_blue" />
+
+    <!-- To remove an entry -->
+
+    <include
+        android:id="@+id/w_table_row_entry_details"
+        layout="@layout/w_remove" />
+
+</TableRow>

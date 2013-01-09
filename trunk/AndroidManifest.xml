@@ -24,8 +24,7 @@
         </activity>
         <activity
             android:name=".component.ui.dialog.BudgetOverview"
-            android:exported="false"
-            android:noHistory="true" >
+            android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,6 +33,15 @@
         </activity>
         <activity
             android:name="de.zainodis.balancemanager.component.ui.dialog.BudgetSettings"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="de.zainodis.balancemanager.component.ui.dialog.EditEntryDialog"
             android:exported="false"
             android:noHistory="true" >
             <intent-filter>

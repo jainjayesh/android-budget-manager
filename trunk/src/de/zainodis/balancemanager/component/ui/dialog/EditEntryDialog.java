@@ -2,8 +2,9 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import java.util.ArrayList;
 
-import android.app.Dialog;
-import android.content.Context;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -19,16 +20,56 @@ import de.zainodis.balancemanager.model.persistence.GroupPersister;
 import de.zainodis.commons.component.ui.widget.CurrencyField;
 import de.zainodis.commons.model.CurrencyAmount;
 
-public class EditEntryDialog extends Dialog {
+public class EditEntryDialog extends Activity {
 
-   public EditEntryDialog(Context context) {
-	 super(context);
-	 setTitle(getContext().getString(R.string.edit_entry));
+   public static final int REQUEST_CODE_EDIT_ENTRY = 1;
+   /** Expected as a {@link Boolean} */
+   public static final String INTENT_EXTRA_IS_MONTHLY = "is-monthly";
+   /** Expected as a {@link String} */
+   public static final String INTENT_EXTRA_CASHFLOW_DIRECTION = "cashflow-direction";
+   /** Expected as a {@link Boolean} */
+   public static final String INTENT_EXTRA_DISABLE_EDITING = "disable-editing";
+
+   @Override
+   protected void onCreate(Bundle savedInstanceState) {
+	 super.onCreate(savedInstanceState);
+	 setTitle(getString(R.string.edit_entry));
 	 setContentView(R.layout.d_edit_entry);
+
+	 // Check if extras have been passed
+	 Intent intent = getIntent();
+	 boolean isEditingDisabled = intent.getBooleanExtra(INTENT_EXTRA_DISABLE_EDITING, false);
+
+	 if (intent.hasExtra(INTENT_EXTRA_CASHFLOW_DIRECTION)) {
+	    CashflowDirection direction = CashflowDirection.parse(intent
+			.getStringExtra(INTENT_EXTRA_CASHFLOW_DIRECTION));
+
+	    Spinner cashflowSpinner = (Spinner) findViewById(R.id.d_edit_entry_cashflow_direction);
+	    SpinnerAdapter adapter = cashflowSpinner.getAdapter();
+	    String cashflowDirection = direction.getLocalized();
+
+	    for (int i = 0; i < adapter.getCount(); i++) {
+		  if (cashflowDirection.equals(adapter.getItem(i).toString())) {
+			// We found it, select this item
+			cashflowSpinner.setSelection(i);
+		  }
+	    }
+	    if (isEditingDisabled) {
+		  cashflowSpinner.setEnabled(false);
+	    }
+	 }
+
+	 if (intent.hasExtra(INTENT_EXTRA_IS_MONTHLY)) {
+	    CheckBox isMonthlyBox = (CheckBox) findViewById(R.id.d_edit_entry_is_monthly);
+	    isMonthlyBox.setChecked(intent.getBooleanExtra(INTENT_EXTRA_IS_MONTHLY, false));
+	    if (isEditingDisabled) {
+		  isMonthlyBox.setEnabled(false);
+	    }
+	 }
 
 	 AutoCompleteTextView groupField = (AutoCompleteTextView) findViewById(R.id.d_edit_entry_group);
 	 // Retrieve suggestion for the group
-	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,
+	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 		  android.R.layout.simple_list_item_1, new ArrayList<String>(
 			   new GroupPersister().getAll()));
 	 // Set the suggestions via the adapter
@@ -51,44 +92,6 @@ public class EditEntryDialog extends Dialog {
 		  onCancel();
 	    }
 	 });
-
-   }
-
-   /**
-    * Initialises isMonthly and the {@link CashflowDirection}.
-    * 
-    * @param context
-    *           the {@link Context}.
-    * @param isMonthly
-    *           true if monthly; false otherwise.
-    * @param direction
-    *           the cashflow direction.
-    * @param disableEditing
-    *           true if isMonthly and direction should not be editable; false
-    *           otherwise.
-    */
-   public EditEntryDialog(Context context, boolean isMonthly, CashflowDirection direction,
-	    boolean disableEditing) {
-	 this(context);
-
-	 Spinner cashflowSpinner = (Spinner) findViewById(R.id.d_edit_entry_cashflow_direction);
-	 SpinnerAdapter adapter = cashflowSpinner.getAdapter();
-	 String cashflowDirection = direction.getLocalized();
-
-	 for (int i = 0; i < adapter.getCount(); i++) {
-	    if (cashflowDirection.equals(adapter.getItem(i).toString())) {
-		  // We found it, select this item
-		  cashflowSpinner.setSelection(i);
-	    }
-	 }
-
-	 CheckBox isMonthlyBox = (CheckBox) findViewById(R.id.d_edit_entry_is_monthly);
-	 isMonthlyBox.setChecked(isMonthly);
-
-	 if (disableEditing) {
-	    cashflowSpinner.setEnabled(false);
-	    isMonthlyBox.setEnabled(false);
-	 }
    }
 
    private void onSave() {
@@ -101,12 +104,17 @@ public class EditEntryDialog extends Dialog {
 	 Entry entry = new Entry(direction, group, isMonthly, amount);
 	 // Persist the new entry to the database
 	 new EntryPersister().save(entry);
+
 	 // Close the dialog
-	 dismiss();
+	 Intent result = getIntent();
+	 // Add extras to the returned intent
+
+	 setResult(RESULT_OK);
+	 finish();
    }
 
    private void onCancel() {
-	 // Simply close the dialog and discard the changes
-	 dismiss();
+	 setResult(RESULT_CANCELED);
+	 finish();
    }
 }
