@@ -36,6 +36,7 @@
     <string name="available_budget">Available budget</string>
     <string name="reset_settings">Reset Settings</string>
     <string name="budget_settings">Budget Settings</string>
+    <string name="add_entry">Add Entry</string>
 
     <string-array name="casfhlow_direction_suggestions">
         <item>@string/expenses</item>

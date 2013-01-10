@@ -36,7 +36,8 @@
     <string name="available_budget">Verfügbares Budget</string>
     <string name="reset_settings">Einstellungen Zurücksetzen</string>
     <string name="budget_settings">Budget Einstellungen</string>
-    
+    <string name="add_entry">Position hinzufügen</string>
+
     <string-array name="casfhlow_direction_suggestions">
         <item>@string/expenses</item>
         <item>@string/income</item>

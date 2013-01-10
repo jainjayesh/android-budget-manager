@@ -3,6 +3,7 @@ package de.zainodis.balancemanager.model.persistence;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
@@ -59,5 +60,28 @@ public class EntryDao extends BaseDaoImpl<Entry, Long> {
 	    }
 	 }
 	 return new ArrayList<Entry>();
+   }
+
+   /**
+    * @return A collection of all groups that are used in the entrie's for the
+    *         currently active cycle.
+    * @param monthly
+    *           if set to true, only the groups of monthly entries are returned;
+    *           otherwise only the groups of non-recurring entries are returned.
+    * @throws SQLException
+    *            on error.
+    */
+   public Collection<String> getEntriesGroups(boolean monthly) throws SQLException {
+	 Collection<String> result = new HashSet<String>();
+	 QueryBuilder<Entry, Long> builder = queryBuilder();
+	 builder.where().eq(FK_BUDGET_CYCLE_ID_FIELD,
+		  new BudgetCyclePersister().getActiveCyclesId(false));
+	 builder.selectColumns(GROUP_FIELD);
+	 List<Entry> queryResult = query(builder.distinct().prepare());
+
+	 for (Entry entry : queryResult) {
+	    result.add(entry.getGroup());
+	 }
+	 return result;
    }
 }

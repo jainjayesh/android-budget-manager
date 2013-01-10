@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:background="@color/light_blue" >
 
     <TextView
-        android:id="@+id/w_table_row_group_header_text"
+        android:id="@+id/w_table_row_header_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:layout_span="3"
-        android:background="@color/light_blue" />
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
 </TableRow>

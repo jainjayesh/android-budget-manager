@@ -88,6 +88,30 @@ public class EntryPersister extends Persister<EntryDao> {
    }
 
    /**
+    * @return all non-recurring entries, sorted by their group for the current
+    *         {@link BudgetCycle}.
+    */
+   public Collection<Entry> getEntriesByGroup() {
+	 try {
+	    EntryDao dao = getDao();
+	    // Get currently active budget cycle id
+	    long cycleId = new BudgetCyclePersister().getActiveCyclesId(false);
+	    if (cycleId > 0) {
+		  QueryBuilder<Entry, Long> builder = dao.queryBuilder();
+		  Where where = builder.where();
+		  where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
+			   where.eq(EntryDao.IS_MONTHLY_FIELD, false));
+		  builder.orderBy(EntryDao.GROUP_FIELD, false);
+		  return dao.query(builder.prepare());
+	    }
+
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "getEntries failed.", e);
+	 }
+	 return new ArrayList<Entry>();
+   }
+
+   /**
     * 
     * @return the overall budget currently available based on income and
     *         expenses, monthly as well as unique for the current budget cycle.

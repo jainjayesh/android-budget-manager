@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import de.zainodis.balancemanager.R;
+import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
 import de.zainodis.commons.component.ui.widget.CancellableProgressDialog;
 
 /**
@@ -34,8 +35,14 @@ public class WelcomeScreen extends Activity {
    protected void onResume() {
 	 super.onResume();
 
+	 if (new BudgetCyclePersister().getActiveCycle() != null) {
+	    startActivity(new Intent(this, BudgetOverview.class));
+
+	 } else {
+	    startActivity(new Intent(this, BudgetSettings.class));
+
+	 }
 	 waitSpinner.dismiss();
-	 startActivity(new Intent(this, BudgetSettings.class));
 	 finish();
    }
 }
