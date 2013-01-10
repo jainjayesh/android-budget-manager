@@ -133,6 +133,10 @@ public class BudgetOverview extends Activity {
 	    // Open entry dialog
 	    startEditEntryDialog();
 	    return true;
+	 case R.id.m_budget_overview_budget_settings:
+	    // Open budget settings dialog
+	    startActivity(new Intent(this, BudgetSettings.class));
+	    return true;
 	 default:
 	    return super.onOptionsItemSelected(item);
 	 }

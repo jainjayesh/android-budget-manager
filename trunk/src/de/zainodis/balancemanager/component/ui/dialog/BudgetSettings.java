@@ -210,6 +210,10 @@ public class BudgetSettings extends FragmentActivity {
 	    // Update the budget field so it can be edited again
 	    updateBudgetCycle(null);
 	    return true;
+	 case R.id.m_budget_settings_budget_overview:
+	    // Open budget settings dialog
+	    startActivity(new Intent(this, BudgetOverview.class));
+	    return true;
 	 default:
 	    return super.onOptionsItemSelected(item);
 	 }
