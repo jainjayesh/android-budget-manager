@@ -34,7 +34,7 @@ public class EditEntryDialog extends Activity {
    protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
 	 setTitle(getString(R.string.edit_entry));
-	 setContentView(R.layout.d_edit_entry);
+	 setContentView(R.layout.a_edit_entry);
 
 	 // Check if extras have been passed
 	 Intent intent = getIntent();

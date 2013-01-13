@@ -40,19 +40,7 @@
 
         <include layout="@layout/w_divider" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@string/available_budget"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/a_budget_settings_available_budget"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="18sp" />
+        <include layout="@layout/w_available_budget" />
 
         <include layout="@layout/w_divider" />
 

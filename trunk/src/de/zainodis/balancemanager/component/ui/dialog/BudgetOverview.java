@@ -2,14 +2,13 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import java.util.Collection;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -18,6 +17,7 @@ import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.BudgetViewFilter;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.utils.DateTimeUtils;
 import de.zainodis.commons.utils.StringUtils;
@@ -29,7 +29,7 @@ import de.zainodis.commons.utils.StringUtils;
  * @author zainodis
  * 
  */
-public class BudgetOverview extends Activity {
+public class BudgetOverview extends BudgetBase {
 
    private BudgetViewFilter filter = BudgetViewFilter.BY_GROUPS;
 
@@ -46,10 +46,10 @@ public class BudgetOverview extends Activity {
 	 // Update current budget
 	 updateBudgetAmount();
 	 // Load Budget items, based on current main filter
-	 loadBudgetItems();
+	 updateEntries();
    }
 
-   protected void loadBudgetItems() {
+   protected void updateEntries() {
 	 // Clear stale items
 	 TableLayout table = (TableLayout) findViewById(R.id.a_budget_overview_table);
 	 table.removeAllViews();
@@ -76,6 +76,7 @@ public class BudgetOverview extends Activity {
 		  TextView text = (TextView) header.findViewById(R.id.w_table_row_header_text);
 		  text.setText(entry.getGroup());
 		  table.addView(header);
+		  currentGroup = entry.getGroup();
 	    }
 
 	    // Add the entry as a new row
@@ -97,26 +98,22 @@ public class BudgetOverview extends Activity {
 			.getGroup(), DateTimeUtils.format(DateTimeUtils.toCalendar(entry.getDate()),
 			DateTimeUtils.DATE_FORMAT)));
 
-	    // Add on click listener for the remove
-	    row.setOnClickListener(new OnClickListener() {
+	    // Add listener for a context menu
+	    row.setOnLongClickListener(new OnLongClickListener() {
 
 		  @Override
-		  public void onClick(View v) {
-			// TODO remove entry and reload budget & items
+		  public boolean onLongClick(View v) {
+			// Pretty inventive (not to say "nasty"), huh :P ?
+			setIntent(getIntent().putExtra(EntryDao.ID_FIELD, entry.getId()));
+			registerForContextMenu(v);
+			openContextMenu(v);
+			unregisterForContextMenu(v);
+			// Display a context menu for the current entry
+			return true;
 		  }
 	    });
-
 	    table.addView(row);
 	 }
-   }
-
-   protected void updateBudgetAmount() {
-	 /*
-	  * TODO move to common base class and include the budget overview layout
-	  * instead of copy pasting it into BudgetSettings.
-	  */
-	 TextView budgetAvailable = (TextView) findViewById(R.id.w_available_budget_amount);
-	 budgetAvailable.setText(new EntryPersister().getCurrentBudget().format());
    }
 
    @Override
@@ -142,29 +139,4 @@ public class BudgetOverview extends Activity {
 	 }
    }
 
-   // TODO copied from budget settings, move to common base class
-   protected void startEditEntryDialog() {
-	 Intent intent = new Intent(BudgetOverview.this, EditEntryDialog.class);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, false);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, false);
-
-	 startActivityForResult(intent, EditEntryDialog.REQUEST_CODE_EDIT_ENTRY);
-   }
-
-   // TODO copied from budget settings, move to common base class
-   @Override
-   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	 super.onActivityResult(requestCode, resultCode, data);
-	 switch (requestCode) {
-	 case EditEntryDialog.REQUEST_CODE_EDIT_ENTRY:
-	    switch (resultCode) {
-	    case RESULT_OK:
-		  // The user has modified the budget
-		  updateBudgetAmount();
-		  loadBudgetItems();
-		  break;
-	    }
-	    break;
-	 }
-   }
 }

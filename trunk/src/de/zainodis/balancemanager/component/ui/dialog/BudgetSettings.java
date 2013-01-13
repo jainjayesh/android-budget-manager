@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +38,7 @@ import de.zainodis.commons.utils.StringUtils;
  * @author zainodis
  * 
  */
-public class BudgetSettings extends FragmentActivity {
+public class BudgetSettings extends BudgetBase {
    private static final String TAG = "Settings";
 
    @Override
@@ -68,31 +67,6 @@ public class BudgetSettings extends FragmentActivity {
 	    }
 	 });
 
-   }
-
-   protected void startEditEntryDialog(boolean isMonthly, CashflowDirection direction,
-	    boolean disableEditing) {
-	 Intent intent = new Intent(BudgetSettings.this, EditEntryDialog.class);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getLocalized());
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, isMonthly);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, disableEditing);
-
-	 startActivityForResult(intent, EditEntryDialog.REQUEST_CODE_EDIT_ENTRY);
-   }
-
-   @Override
-   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	 super.onActivityResult(requestCode, resultCode, data);
-	 switch (requestCode) {
-	 case EditEntryDialog.REQUEST_CODE_EDIT_ENTRY:
-	    switch (resultCode) {
-	    case RESULT_OK:
-		  // The user has modified the budget
-		  updateBudgetCalculation();
-		  break;
-	    }
-	    break;
-	 }
    }
 
    @Override
@@ -132,45 +106,6 @@ public class BudgetSettings extends FragmentActivity {
 	 }
    };
 
-   private void updateBudgetCalculation() {
-
-	 // Append existing incomes and expenses to their respective layouts
-	 LinearLayout incomeLayout = (LinearLayout) findViewById(R.id.a_budget_settings_income_block);
-	 LinearLayout expenseLayout = (LinearLayout) findViewById(R.id.a_budget_settings_expenses_block);
-
-	 // Cleanup old fragments
-	 incomeLayout.removeAllViews();
-	 expenseLayout.removeAllViews();
-
-	 for (final Entry entry : new EntryPersister().getEntries(true)) {
-
-	    LinearLayout entryLayout = (LinearLayout) getLayoutInflater().inflate(
-			R.layout.w_table_remove_text, null);
-	    TextView entryDetails = (TextView) entryLayout
-			.findViewById(R.id.w_table_remove_text_label);
-	    entryDetails.setText(String.format(getString(R.string.entry_details), entry.getAmount()
-			.format(), entry.getGroup(), entry.getFormattedDate()));
-	    entryLayout.findViewById(R.id.w_table_remove_text_button).setOnClickListener(
-			new OnClickListener() {
-
-			   @Override
-			   public void onClick(View v) {
-				 // Listen for delete events
-				 new EntryPersister().delete(entry.getId());
-				 updateBudgetCalculation();
-			   }
-			});
-
-	    if (CashflowDirection.INCOME.equals(entry.getCashflowDirection())) {
-		  incomeLayout.addView(entryLayout);
-	    } else {
-		  expenseLayout.addView(entryLayout);
-	    }
-	 }
-	 TextView budgetAvailable = (TextView) findViewById(R.id.a_budget_settings_available_budget);
-	 budgetAvailable.setText(new EntryPersister().getCurrentBudget().format());
-   }
-
    private void updateBudgetCycle(BudgetCycle cycle) {
 	 Button beginning = (Button) findViewById(R.id.a_budget_settings_cycle_beginning);
 	 TextView end = (TextView) findViewById(R.id.a_budget_settings_cycle_end);
@@ -191,7 +126,7 @@ public class BudgetSettings extends FragmentActivity {
 			DateTimeUtils.DATE_FORMAT));
 	 }
 	 // Update the budget cycle amounts
-	 updateBudgetCalculation();
+	 updateBudgetAmount();
    }
 
    @Override
@@ -216,6 +151,43 @@ public class BudgetSettings extends FragmentActivity {
 	    return true;
 	 default:
 	    return super.onOptionsItemSelected(item);
+	 }
+   }
+
+   @Override
+   protected void updateEntries() {
+	 // Append existing incomes and expenses to their respective layouts
+	 LinearLayout incomeLayout = (LinearLayout) findViewById(R.id.a_budget_settings_income_block);
+	 LinearLayout expenseLayout = (LinearLayout) findViewById(R.id.a_budget_settings_expenses_block);
+
+	 // Cleanup old fragments
+	 incomeLayout.removeAllViews();
+	 expenseLayout.removeAllViews();
+
+	 for (final Entry entry : new EntryPersister().getEntries(true)) {
+
+	    LinearLayout entryLayout = (LinearLayout) getLayoutInflater().inflate(
+			R.layout.w_table_remove_text, null);
+	    TextView entryDetails = (TextView) entryLayout
+			.findViewById(R.id.w_table_remove_text_label);
+	    entryDetails.setText(String.format(getString(R.string.entry_details), entry.getAmount()
+			.format(), entry.getGroup(), entry.getFormattedDate()));
+	    entryLayout.findViewById(R.id.w_table_remove_text_button).setOnClickListener(
+			new OnClickListener() {
+
+			   @Override
+			   public void onClick(View v) {
+				 // Listen for delete events
+				 new EntryPersister().delete(entry.getId());
+				 updateBudgetAmount();
+			   }
+			});
+
+	    if (CashflowDirection.INCOME.equals(entry.getCashflowDirection())) {
+		  incomeLayout.addView(entryLayout);
+	    } else {
+		  expenseLayout.addView(entryLayout);
+	    }
 	 }
    }
 
