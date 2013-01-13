@@ -35,10 +35,6 @@ public abstract class BudgetBase extends FragmentActivity {
 	    updateBudgetAmount();
 	    updateEntries();
 	    return true;
-	 case R.id.m_edit_entry_edit:
-	    // TODO Open the entry for editing
-
-	    return true;
 	 default:
 	    return super.onContextItemSelected(item);
 
