@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="scmobil" default="help">
+
+	<!-- The local.properties file is created and updated by the 'android' tool.
+         It contains the path to the SDK. It should *NOT* be checked into
+         Version Control Systems. -->
+	<property file="local.properties" />
+
+
+	<!-- The ant.properties file can be created by you. It is only edited by the
+         'android' tool to add properties to it.
+         This is the place to change some Ant specific build properties.
+         Here are some properties you may want to change/update:
+
+         source.dir
+             The name of the source directory. Default is 'src'.
+         out.dir
+             The name of the output directory. Default is 'bin'.
+
+         For other overridable properties, look at the beginning of the rules
+         files in the SDK, at tools/ant/build.xml
+
+         Properties related to the SDK location or the project target should
+         be updated using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems.
+
+         -->
+	<property file="ant.properties" />
+
+	<!-- The project.properties file is created and updated by the 'android'
+         tool, as well as ADT.
+
+         This contains project specific properties such as project target, and library
+         dependencies. Lower level build properties are stored in ant.properties
+         (or in .classpath for Eclipse projects).
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems. -->
+	<loadproperties srcFile="project.properties" />
+
+	<!-- quick check on sdk.dir -->
+	<fail
+            message="sdk.dir is missing. Make sure to generate local.properties using 'android update project' or to inject it through an env var"
+            unless="sdk.dir"			
+    />
+
+	<!-- Check if base directy of the application has been set -->
+	<fail
+            message="base.dir is missing. Make sure to generate local.properties using 'android update project' and add the definition for base.dir to it, or to inject it through an env var"
+            unless="base.dir"
+    />
+
+
+	<!-- extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets -->
+	<!--
+    <target name="-pre-build">
+    </target>
+    <target name="-pre-compile">
+    </target>
+
+    /* This is typically used for code obfuscation.
+       Compiled code location: ${out.classes.absolute.dir}
+       If this is not done in place, override ${out.dex.input.absolute.dir} */
+    <target name="-post-compile">
+    </target>
+-->
+	<!--Reference to external lib xmltask.jar in libs folder. We need it to perform xpath related tasks-->
+	<taskdef name="xmltask" 
+            classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="./libs/xmltask.jar"/>
+
+
+	<path id="android.antlibs">
+		<pathelement path="${sdk.dir}/tools/lib/anttasks.jar" />
+	</path>
+
+	<taskdef name="xpath"
+        classname="com.android.ant.XPathTask"
+        classpathref="android.antlibs" />
+
+	<!-- Import the actual build file.
+
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <import> task.
+             - customize it to your needs.
+         - Customize the whole content of build.xml
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, replacing the <import> task.
+             - customize to your needs.
+
+         ***********************
+         ****** IMPORTANT ******
+         ***********************
+         In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
+         in order to avoid having your file be overridden by tools such as "android update project"
+    -->
+	<!-- version-tag: custom -->
+
+	<!--
+	In order to fill the customer variable with a value use the following command line option:
+	ant release -Dcustomer=value
+	where "value" should be the name of the customer, matching the folder of the cusomer in the customer folder.
+	-->
+	<target name="-pre-build">
+		<echo message="Building for customer ${customer}" />
+		<echo message="Preparing build - copying customer files to resource directoy" />
+		<echo message="build target ${build.target}" />
+		<property name="ant.project.name" value="${ant.project.name}-${customer}" />	
+
+		<!--Get the version name from the manifest so we can compare it to the version in the release notes-->
+		<xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName"
+                        output="applicationVersion" default="unknown"/>						
+		<echo message="Application Version is ${applicationVersion}" />
+
+		<!--Get the version of the release notes, get a different default than for the application version so they dont match-->
+		<xpath input="release_notes.xml" expression="/release-notes/@version"
+                        output="releaseNotesVersion" default="undefined"/>
+		<echo message="Release Notes Version is ${releaseNotesVersion}" />
+
+		<!--Ensure the version of the release notes matches the version of the application-->
+		<condition property="versionDoesNotMatch">
+			<not>
+				<equals arg1="${applicationVersion}" arg2="${releaseNotesVersion}"/>
+			</not>
+		</condition>
+		<fail if="versionDoesNotMatch" message="The Release notes are not up to date! Update the release notes and it's version to match the application version you are building."/>
+
+		<!--Copy the release notes to res/xml-->
+		<copy file="${base.dir}/release_notes.xml" tofile="${resource.xml.dir}/release_notes.xml" overwrite="true" />
+
+	</target>
+
+
+	<!--Copied from ant build.xml - we need this one so we can change/influence the name of the apk file-->
+	<target name="-set-release-mode" depends="-set-mode-check">
+		<property name="version.name" value="unknown"/>
+		<!--Get versionName for current release from AndroidManifest.xml-->
+		<xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName"
+                        output="versionName" default="unknown"/>
+						
+		<property name="out.packaged.file" location="${out.absolute.dir}/${ant.project.name}-${versionName}-unsigned.apk" />
+		<property name="out.final.file" location="${out.absolute.dir}/${ant.project.name}-${versionName}.apk" />
+		<property name="build.is.mode.set" value="true" />
+
+		<!-- record the current build target -->
+		<property name="build.target" value="release" />
+
+		<property name="build.is.instrumented" value="false" />
+
+		<!-- release mode is only valid if the manifest does not explicitly
+             set debuggable to true. default is false. -->
+		<xpath input="AndroidManifest.xml" expression="/manifest/application/@android:debuggable"
+                output="build.is.packaging.debug" default="false"/>
+
+		<!-- signing mode: release -->
+		<property name="build.is.signing.debug" value="false" />
+
+		<if condition="${build.is.packaging.debug}">
+			<then>
+				<echo>*************************************************</echo>
+				<echo>****  Android Manifest has debuggable=true   ****</echo>
+				<echo>**** Doing DEBUG packaging with RELEASE keys ****</echo>
+				<echo>*************************************************</echo>
+			</then>
+			<else>
+				<!-- property only set in release mode.
+                     Useful for if/unless attributes in target node
+                     when using Ant before 1.8 -->
+				<property name="build.is.mode.release" value="true"/>
+			</else>
+		</if>
+	</target>
+
+	<import file="${sdk.dir}/tools/ant/build.xml" />
+</project>
