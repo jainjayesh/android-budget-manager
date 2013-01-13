@@ -77,6 +77,7 @@ public class BudgetSettings extends BudgetBase {
 	 if (cycle != null) {
 	    LogCat.i(TAG, "Loaded existing budget cycle beginning.");
 	    updateBudgetCycle(cycle);
+	    updateEntries();
 	 }
 
    }
@@ -180,6 +181,7 @@ public class BudgetSettings extends BudgetBase {
 				 // Listen for delete events
 				 new EntryPersister().delete(entry.getId());
 				 updateBudgetAmount();
+				 updateEntries();
 			   }
 			});
 
