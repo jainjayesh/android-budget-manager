@@ -15,6 +15,7 @@ import android.widget.TextView;
 import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.Group;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.balancemanager.model.persistence.GroupPersister;
 import de.zainodis.commons.component.ui.widget.CurrencyField;
@@ -104,7 +105,8 @@ public class EditEntryDialog extends Activity {
 	 Entry entry = new Entry(direction, group, isMonthly, amount);
 	 // Persist the new entry to the database
 	 new EntryPersister().save(entry);
-
+	 // Persist group
+	 new GroupPersister().save(new Group(group));
 	 // Close the dialog
 	 Intent result = getIntent();
 	 // Add extras to the returned intent

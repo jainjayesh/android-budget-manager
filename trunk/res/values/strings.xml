@@ -38,6 +38,7 @@
     <string name="budget_settings">Budget Einstellungen</string>
     <string name="add_entry">Position hinzufügen</string>
     <string name="edit">Bearbeiten</string>
+    <string name="start_new_cycle">Neuen Budget Zyklus starten</string>
     
     <string-array name="casfhlow_direction_suggestions">
         <item>@string/expenses</item>

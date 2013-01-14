@@ -76,16 +76,10 @@ public class BudgetSettings extends BudgetBase {
 	 BudgetCycle cycle = new BudgetCyclePersister().getActiveCycle();
 	 if (cycle != null) {
 	    LogCat.i(TAG, "Loaded existing budget cycle beginning.");
-	    updateBudgetCycle(cycle);
+	    startNewCycle(cycle);
 	    updateEntries();
 	 }
 
-   }
-
-   public void setBudgetBeginning(View view) {
-	 // Display the date picker
-	 DialogFragment newFragment = new DatePickerFragment(onBudgetBeginningSelected);
-	 newFragment.show(getSupportFragmentManager(), "datePicker");
    }
 
    private final DatePickerDialog.OnDateSetListener onBudgetBeginningSelected = new DatePickerDialog.OnDateSetListener() {
@@ -101,30 +95,24 @@ public class BudgetSettings extends BudgetBase {
 	    new BudgetCyclePersister().endOngoingCycles();
 	    // Save the new cycle
 	    BudgetCycle newCycle = new BudgetCycle(start.getTime());
-	    assertTrue("Failed to save new budget cycle.", new BudgetCyclePersister().save(newCycle));
-
-	    updateBudgetCycle(newCycle);
+	    startNewCycle(newCycle);
 	 }
    };
 
-   private void updateBudgetCycle(BudgetCycle cycle) {
-	 Button beginning = (Button) findViewById(R.id.a_budget_settings_cycle_beginning);
-	 TextView end = (TextView) findViewById(R.id.a_budget_settings_cycle_end);
+   protected void startNewCycle(BudgetCycle cycle) {
+	 TextView beginning = (TextView) findViewById(R.id.a_budget_settings_cycle_beginning);
+	 // End all other ongoing cycles
+	 new BudgetCyclePersister().endOngoingCycles();
+	 // Save the new cycle
+	 assertTrue("Failed to save new budget cycle.", new BudgetCyclePersister().save(cycle));
 	 if (cycle == null) {
 	    // Reset the fields
 	    beginning.setText(StringUtils.EMPTY);
-	    end.setText(getString(R.string.unknown));
-	    // Let the user edit the budget cycle beginning
-	    beginning.setEnabled(true);
 	 } else {
 	    beginning.setText(DateTimeUtils.format(DateTimeUtils.toCalendar(cycle.getStart()),
 			DateTimeUtils.DATE_FORMAT));
-	    // Prevent the user from changing this setting
-	    beginning.setEnabled(false);
 	    // So the writing is visible
 	    beginning.setTextColor(Color.LTGRAY);
-	    end.setText(DateTimeUtils.format(DateTimeUtils.toCalendar(cycle.getEnd()),
-			DateTimeUtils.DATE_FORMAT));
 	 }
 	 // Update the budget cycle amounts
 	 updateBudgetAmount();
@@ -140,11 +128,10 @@ public class BudgetSettings extends BudgetBase {
    @Override
    public boolean onOptionsItemSelected(MenuItem item) {
 	 switch (item.getItemId()) {
-	 case R.id.m_budget_settings_reset_settings:
-	    // Close current Budget cycle...
-	    new BudgetCyclePersister().endOngoingCycles();
-	    // Update the budget field so it can be edited again
-	    updateBudgetCycle(null);
+	 case R.id.m_budget_settings_start_new_cycle:
+	    // Display the date picker
+	    DialogFragment newFragment = new DatePickerFragment(onBudgetBeginningSelected);
+	    newFragment.show(getSupportFragmentManager(), "datePicker");
 	    return true;
 	 case R.id.m_budget_settings_budget_overview:
 	    // Open budget settings dialog

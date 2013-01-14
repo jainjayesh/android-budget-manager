@@ -20,6 +20,7 @@ public class GroupDao extends BaseDaoImpl<Group, String> {
 
    public static final String TABLE_NAME = "group";
    public static final String NAME_FIELD = "name";
+   public static final String IS_FIXED_FIELD = "is-fixed";
 
    public GroupDao(ConnectionSource connectionSource) throws SQLException {
 	 super(connectionSource, Group.class);
@@ -39,8 +40,8 @@ public class GroupDao extends BaseDaoImpl<Group, String> {
     * @throws SQLException
     *            on error.
     */
-   public int save(String groupName) throws SQLException {
-	 CreateOrUpdateStatus status = createOrUpdate(new Group(groupName));
+   public int save(Group newGroup) throws SQLException {
+	 CreateOrUpdateStatus status = createOrUpdate(newGroup);
 	 return status.isCreated() || status.isUpdated() ? 1 : 0;
    }
 

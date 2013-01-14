@@ -18,8 +18,17 @@ public class Group {
    @DatabaseField(columnName = GroupDao.NAME_FIELD, id = true)
    private String name;
 
+   /** Fixed groups are never deleted */
+   @DatabaseField(columnName = GroupDao.IS_FIXED_FIELD)
+   private boolean isFixed = false;
+
    protected Group() {
 	 // for ormlite
+   }
+
+   public Group(String groupName, boolean isFixed) {
+	 this.name = groupName;
+	 this.isFixed = isFixed;
    }
 
    public Group(String groupName) {
@@ -28,5 +37,9 @@ public class Group {
 
    public String getName() {
 	 return name;
+   }
+
+   public boolean isFixed() {
+	 return isFixed;
    }
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="scmobil" default="help">
+<project name="balance-manager" default="help">
 
 	<!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -109,7 +109,6 @@
 		<echo message="Building for customer ${customer}" />
 		<echo message="Preparing build - copying customer files to resource directoy" />
 		<echo message="build target ${build.target}" />
-		<property name="ant.project.name" value="${ant.project.name}-${customer}" />	
 
 		<!--Get the version name from the manifest so we can compare it to the version in the release notes-->
 		<xpath input="AndroidManifest.xml" expression="/manifest/@android:versionName"
