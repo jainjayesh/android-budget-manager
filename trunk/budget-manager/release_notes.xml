@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<release-notes version="1.0.1">
+<release-notes version="1.0.2">
+
+	<release version="1.0.2">
+		<item text="Fehler korrigiert, der dazu führte, das bei einem neuen Zyklus nicht nur die monatlichen Positionen, sondern auch die einmaligen Positionen übernommen wurde."/>		
+	</release>
 
 	<release version="1.0.1">
 		<item text="Wird die Anwendung ohne laufenden Budget Zyklus gestartet, werden Sie entsprechend aufgefordert, diesen zuerst zu starten. Der Wechsel zur Budgetübersicht ist erst möglich, wenn es einen aktiven Budgetzyklus gibt."/>		

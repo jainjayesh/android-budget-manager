@@ -8,12 +8,12 @@ import java.util.List;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.DatabaseTableConfig;
 
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.Entry;
-import de.zainodis.commons.LogCat;
 
 /**
  * Persists an {@link Entry} to the database.
@@ -55,7 +55,9 @@ public class EntryDao extends BaseDaoImpl<Entry, Long> {
 	 long lastCycleId = new BudgetCyclePersister().getLastCyclesId();
 	 if (lastCycleId > 0) {
 	    QueryBuilder<Entry, Long> builder = queryBuilder();
-	    builder.where().eq(FK_BUDGET_CYCLE_ID_FIELD, lastCycleId);
+	    Where where = builder.where();
+	    where.and(where.eq(IS_MONTHLY_FIELD, true),
+			where.eq(FK_BUDGET_CYCLE_ID_FIELD, lastCycleId));
 	    List<Entry> result = query(builder.prepare());
 	    if (result != null) {
 		  return result;
