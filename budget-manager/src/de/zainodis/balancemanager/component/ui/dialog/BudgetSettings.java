@@ -37,27 +37,35 @@ import de.zainodis.commons.utils.StringUtils;
  * 
  */
 public class BudgetSettings extends BudgetBase {
+
    private static final String TAG = "Settings";
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
 	 setTitle(getString(R.string.budget_settings));
-	 setContentView(R.layout.a_budget_settings);
 
    }
 
    @Override
    protected void onResume() {
 	 super.onResume();
-	 // Load current budget beginning
+	 /*
+	  * Set the content layout depending on whether we have an ongoing cycle or
+	  * not.
+	  */
 	 BudgetCycle cycle = new BudgetCyclePersister().getActiveCycle();
 	 if (cycle != null) {
 	    LogCat.i(TAG, "Loaded existing budget cycle beginning.");
-	    startNewCycle(cycle);
-	    updateEntries();
+	    setContentView(R.layout.a_budget_settings);
+	    loadBudgetCycle(cycle);
+	 } else {
+	    setContentView(R.layout.a_budget_settings_empty);
+	    // Set text field's text
+	    TextView view = (TextView) findViewById(R.id.a_budget_settings_empty_how_to);
+	    view.setText(String
+			.format(getString(R.string.how_to), getString(R.string.start_new_cycle)));
 	 }
-
    }
 
    private final DatePickerDialog.OnDateSetListener onBudgetBeginningSelected = new DatePickerDialog.OnDateSetListener() {
@@ -69,21 +77,24 @@ public class BudgetSettings extends BudgetBase {
 	    start.set(Calendar.YEAR, year);
 	    start.set(Calendar.MONTH, monthOfYear);
 	    start.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-	    startNewCycle(new BudgetCycle(start.getTime()));
+	    // Switch content view
+	    setContentView(R.layout.a_budget_settings);
+	    // End all other ongoing cycles
+	    new BudgetCyclePersister().endOngoingCycles();
+	    // Save the new cycle
+	    BudgetCycle newCycle = new BudgetCycle(start.getTime());
+	    assertTrue("Failed to save new budget cycle.", new BudgetCyclePersister().save(newCycle));
+	    loadBudgetCycle(newCycle);
 	 }
    };
 
    /**
-    * Ends ongoing {@link BudgetCycle}s and starts a new one.
+    * Loads the given budget cycle.
     * 
     * @param cycle
     */
-   protected void startNewCycle(BudgetCycle cycle) {
+   protected void loadBudgetCycle(BudgetCycle cycle) {
 	 TextView beginning = (TextView) findViewById(R.id.a_budget_settings_cycle_beginning);
-	 // End all other ongoing cycles
-	 new BudgetCyclePersister().endOngoingCycles();
-	 // Save the new cycle
-	 assertTrue("Failed to save new budget cycle.", new BudgetCyclePersister().save(cycle));
 	 if (cycle == null) {
 	    // Reset the fields
 	    beginning.setText(StringUtils.EMPTY);
@@ -95,6 +106,21 @@ public class BudgetSettings extends BudgetBase {
 	 }
 	 // Update the budget cycle amounts
 	 updateBudgetAmount();
+	 // Update the display of the entries
+	 updateEntries();
+   }
+
+   @Override
+   public boolean onPrepareOptionsMenu(Menu menu) {
+	 // Disable some options if there is no ongoing budget cycle
+	 if (!new BudgetCyclePersister().hasOngoingCycleExists()) {
+	    menu.getItem(1).setEnabled(false);
+	    menu.getItem(2).setEnabled(false);
+	 } else {
+	    menu.getItem(1).setEnabled(true);
+	    menu.getItem(2).setEnabled(true);
+	 }
+	 return super.onPrepareOptionsMenu(menu);
    }
 
    @Override
