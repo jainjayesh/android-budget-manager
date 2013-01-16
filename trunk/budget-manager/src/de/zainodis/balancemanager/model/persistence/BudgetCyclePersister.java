@@ -74,6 +74,15 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
 	 }
    }
 
+   /**
+    * 
+    * @return true, if there is an ongoing budget cycle; false otherwise.
+    */
+   public boolean hasOngoingCycleExists() {
+	 return getActiveCycle() != null;
+
+   }
+
    public void endOngoingCycles() {
 	 try {
 	    getDao().endOngoingCycles();

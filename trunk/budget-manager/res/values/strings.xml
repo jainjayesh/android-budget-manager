@@ -39,7 +39,8 @@
     <string name="add_entry">Position hinzufügen</string>
     <string name="edit">Bearbeiten</string>
     <string name="start_new_cycle">Neuen Budget Zyklus starten</string>
-    
+    <string name="how_to">Bevor sie neue Positionen hinzufügen können (monatliche sowie einmalige), ist es nötig einen neuen Budget Zyklus zu starten, dem diese Positionen zugeordnet werden können. Sie können einen neuen Budget Zyklus starten, indem sie im Optionsmenü die Option %s auswählen. </string>
+
     <string-array name="casfhlow_direction_suggestions">
         <item>@string/expenses</item>
         <item>@string/income</item>
