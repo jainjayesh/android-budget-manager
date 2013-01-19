@@ -14,9 +14,10 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import de.zainodis.balancemanager.R;
-import de.zainodis.balancemanager.model.BudgetViewFilter;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.EntryFilter;
+import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.utils.DateTimeUtils;
@@ -30,8 +31,11 @@ import de.zainodis.commons.utils.StringUtils;
  * 
  */
 public class BudgetOverview extends BudgetBase {
+   public static final String TAG = "BudgetOverview";
 
-   private BudgetViewFilter filter = BudgetViewFilter.BY_GROUPS;
+   // Standard settings, may be changed by spinner
+   private EntryScope scope = EntryScope.ALL;
+   private EntryFilter filter = EntryFilter.BY_GROUP;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -53,30 +57,33 @@ public class BudgetOverview extends BudgetBase {
 	 // Clear stale items
 	 TableLayout table = (TableLayout) findViewById(R.id.a_budget_overview_table);
 	 table.removeAllViews();
-	 switch (filter) {
-	 case BY_CASHFLOW_DIRECTION:
-	    break;
-	 // TODO
-	 case BY_GROUPS:
-	    displayFilteredByGroups(table);
-	    break;
-	 }
+	 filter(table);
    }
 
-   protected void displayFilteredByGroups(TableLayout table) {
-	 // Obtain all entries, ordered by their groups for the current cycle
-	 Collection<Entry> result = new EntryPersister().getEntriesByGroup();
+   protected void filter(TableLayout table) {
+	 // Obtain all entries filter by specified filter
+	 Collection<Entry> result = new EntryPersister().getFilteredEntries(scope, filter);
 
-	 String currentGroup = StringUtils.EMPTY;
+	 String currentHeader = StringUtils.EMPTY;
 	 for (final Entry entry : result) {
-	    if (!entry.getGroup().equals(currentGroup)) {
+	    String newHeader = StringUtils.EMPTY;
+
+	    switch (filter) {
+	    case BY_CASHFLOW_DIRECTION:
+		  newHeader = entry.getCashflowDirection().name();
+		  break;
+	    case BY_GROUP:
+		  newHeader = entry.getGroup();
+		  break;
+	    }
+	    if (!newHeader.equals(currentHeader)) {
 		  // Draw the group header if it's a new group
 		  TableRow header = (TableRow) getLayoutInflater().inflate(R.layout.w_table_row_header,
 			   null);
 		  TextView text = (TextView) header.findViewById(R.id.w_table_row_header_text);
 		  text.setText(entry.getGroup());
 		  table.addView(header);
-		  currentGroup = entry.getGroup();
+		  currentHeader = entry.getGroup();
 	    }
 
 	    // Add the entry as a new row

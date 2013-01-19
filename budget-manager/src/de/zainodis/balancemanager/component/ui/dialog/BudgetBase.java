@@ -12,8 +12,11 @@ import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
+import de.zainodis.commons.LogCat;
 
 public abstract class BudgetBase extends FragmentActivity {
+
+   public static final String TAG = "BudgetBase";
 
    @Override
    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -68,6 +71,7 @@ public abstract class BudgetBase extends FragmentActivity {
 	 case EditEntryDialog.REQUEST_CODE_EDIT_ENTRY:
 	    switch (resultCode) {
 	    case RESULT_OK:
+		  LogCat.i(TAG, "New entry has been created, updating ui...");
 		  // The user has modified the budget
 		  updateBudgetAmount();
 		  updateEntries();
