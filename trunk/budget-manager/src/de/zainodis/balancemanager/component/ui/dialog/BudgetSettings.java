@@ -21,6 +21,8 @@ import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.EntryFilter;
+import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.LogCat;
@@ -38,7 +40,7 @@ import de.zainodis.commons.utils.StringUtils;
  */
 public class BudgetSettings extends BudgetBase {
 
-   private static final String TAG = "Settings";
+   public static final String TAG = "Settings";
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +163,8 @@ public class BudgetSettings extends BudgetBase {
 	 incomeLayout.removeAllViews();
 	 expenseLayout.removeAllViews();
 
-	 for (final Entry entry : new EntryPersister().getEntries(true)) {
+	 for (final Entry entry : new EntryPersister().getFilteredEntries(EntryScope.MONTHLY,
+		  EntryFilter.NONE)) {
 
 	    LinearLayout entryLayout = (LinearLayout) getLayoutInflater().inflate(
 			R.layout.w_table_remove_text, null);

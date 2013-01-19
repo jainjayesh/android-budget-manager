@@ -8,9 +8,10 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
-import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.EntryFilter;
+import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.persistence.Persister;
 import de.zainodis.commons.LogCat;
 import de.zainodis.commons.model.CurrencyAmount;
@@ -57,15 +58,7 @@ public class EntryPersister extends Persister<EntryDao> {
 	 }
    }
 
-   /**
-    * 
-    * @param monthlyOnly
-    *           true if only monthly recurring entries should be returned; false
-    *           if all entries should be returned.
-    * @return a collection of all {@link Entry}s for the currently active
-    *         {@link BudgetCycle}; an empty list, if there are none.
-    */
-   public Collection<Entry> getEntries(boolean monthlyOnly) {
+   public Collection<Entry> getFilteredEntries(EntryScope scope, EntryFilter filter) {
 	 try {
 	    EntryDao dao = getDao();
 	    // Get currently active budget cycle id
@@ -73,41 +66,34 @@ public class EntryPersister extends Persister<EntryDao> {
 	    if (cycleId > 0) {
 		  QueryBuilder<Entry, Long> builder = dao.queryBuilder();
 		  Where where = builder.where();
-		  if (monthlyOnly) {
+
+		  switch (scope) {
+		  case ALL:
+			where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId);
+			break;
+		  case MONTHLY:
 			where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
 				 where.eq(EntryDao.IS_MONTHLY_FIELD, true));
-		  } else {
-			where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId);
+			break;
+		  case NON_RECURRENT:
+			where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
+				 where.eq(EntryDao.IS_MONTHLY_FIELD, false));
+			break;
+		  }
+
+		  switch (filter) {
+		  case BY_CASHFLOW_DIRECTION:
+			builder.orderBy(EntryDao.CASHFLOW_DIRECTION_FIELD, false);
+			break;
+		  case BY_GROUP:
+			builder.orderBy(EntryDao.GROUP_FIELD, false);
+			break;
 		  }
 		  return dao.query(builder.prepare());
 	    }
 
 	 } catch (SQLException e) {
-	    LogCat.e(TAG, "getEntries failed.", e);
-	 }
-	 return new ArrayList<Entry>();
-   }
-
-   /**
-    * @return all non-recurring entries, sorted by their group for the current
-    *         {@link BudgetCycle}.
-    */
-   public Collection<Entry> getEntriesByGroup() {
-	 try {
-	    EntryDao dao = getDao();
-	    // Get currently active budget cycle id
-	    long cycleId = new BudgetCyclePersister().getActiveCyclesId();
-	    if (cycleId > 0) {
-		  QueryBuilder<Entry, Long> builder = dao.queryBuilder();
-		  Where where = builder.where();
-		  where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
-			   where.eq(EntryDao.IS_MONTHLY_FIELD, false));
-		  builder.orderBy(EntryDao.GROUP_FIELD, false);
-		  return dao.query(builder.prepare());
-	    }
-
-	 } catch (SQLException e) {
-	    LogCat.e(TAG, "getEntries failed.", e);
+	    LogCat.e(TAG, "getFilteredEntries failed.", e);
 	 }
 	 return new ArrayList<Entry>();
    }
@@ -118,8 +104,9 @@ public class EntryPersister extends Persister<EntryDao> {
     *         expenses, monthly as well as unique for the current budget cycle.
     */
    public CurrencyAmount getCurrentBudget() {
+	 // TODO optimize using SUM raw query
 	 CurrencyAmount result = new CurrencyAmount(0);
-	 Collection<Entry> entries = getEntries(false);
+	 Collection<Entry> entries = getFilteredEntries(EntryScope.ALL, EntryFilter.NONE);
 
 	 for (Entry entry : entries) {
 	    if (CashflowDirection.EXPENSE.equals(entry.getCashflowDirection())) {
