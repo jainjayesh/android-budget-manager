@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<release-notes version="1.0.2">
+<release-notes version="1.0.3">
+
+	<release version="1.0.3">
+		<item text="Komplette Überarbeitung des Benutzerinterfaces."/>		
+	</release>
 
 	<release version="1.0.2">
 		<item text="Fehler korrigiert, der dazu führte, das bei einem neuen Zyklus nicht nur die monatlichen Positionen, sondern auch die einmaligen Positionen übernommen wurde."/>		
