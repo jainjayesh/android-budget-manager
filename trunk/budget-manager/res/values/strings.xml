@@ -44,6 +44,7 @@
     <string name="recurring_entries">Wiederkehrende Positionen</string>
     <string name="non_recurrent_entries">Einmalige Positionen</string>
     <string name="all">Alle</string>
+    <string name="no_sorting">Keine Sortierung</string>
     <string name="show_following_entries">Zeige folgende Positionen an :</string>
     <string name="sort_by">Sortiere nach :</string>
 
