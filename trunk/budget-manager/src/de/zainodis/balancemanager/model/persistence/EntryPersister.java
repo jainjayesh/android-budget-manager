@@ -71,11 +71,11 @@ public class EntryPersister extends Persister<EntryDao> {
 		  case ALL:
 			where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId);
 			break;
-		  case MONTHLY:
+		  case RECURRING:
 			where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
 				 where.eq(EntryDao.IS_MONTHLY_FIELD, true));
 			break;
-		  case NON_RECURRENT:
+		  case NON_RECURRING:
 			where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
 				 where.eq(EntryDao.IS_MONTHLY_FIELD, false));
 			break;
@@ -87,6 +87,10 @@ public class EntryPersister extends Persister<EntryDao> {
 			break;
 		  case BY_GROUP:
 			builder.orderBy(EntryDao.GROUP_FIELD, false);
+			break;
+		  default:
+			// Use by date as the default
+			builder.orderBy(EntryDao.DATE_TIME_FIELD, false);
 			break;
 		  }
 		  return dao.query(builder.prepare());

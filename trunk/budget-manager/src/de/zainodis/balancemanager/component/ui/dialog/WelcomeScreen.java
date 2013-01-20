@@ -39,7 +39,7 @@ public class WelcomeScreen extends Activity {
 	    startActivity(new Intent(this, BudgetOverview.class));
 
 	 } else {
-	    startActivity(new Intent(this, BudgetSettings.class));
+	    startActivity(new Intent(this, Settings.class));
 
 	 }
 	 waitSpinner.dismiss();

@@ -41,7 +41,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="@string/monthly_amount"
+            android:text="@string/is_recurring"
             android:textSize="18sp" />
 
         <TextView

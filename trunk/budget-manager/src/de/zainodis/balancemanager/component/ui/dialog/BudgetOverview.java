@@ -2,14 +2,13 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import java.util.Collection;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -42,6 +41,48 @@ public class BudgetOverview extends BudgetBase {
 	 super.onCreate(savedInstanceState);
 	 setTitle(getString(R.string.budget_overview));
 	 setContentView(R.layout.a_budget_overview);
+
+	 // Add a listener to the scope selector
+	 Spinner spinner = (Spinner) findViewById(R.id.a_budget_overview_spinner_scope);
+	 spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+	    @Override
+	    public void onItemSelected(AdapterView<?> parent, View selectedItem, int position, long id) {
+		  Object selected = parent.getItemAtPosition(position);
+		  String selectedValue = selected != null ? selected.toString() : null;
+
+		  // Update scope
+		  scope = EntryScope.fromName(BudgetOverview.this, selectedValue);
+
+		  // Re-load the entries with the current filter/scope settings
+		  updateEntries();
+	    }
+
+	    @Override
+	    public void onNothingSelected(AdapterView<?> arg0) {
+	    }
+	 });
+
+	 // Add a listener to the filter selector
+	 spinner = (Spinner) findViewById(R.id.a_budget_overview_spinner_filter);
+	 spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+	    @Override
+	    public void onItemSelected(AdapterView<?> parent, View selectedItem, int position, long id) {
+		  Object selected = parent.getItemAtPosition(position);
+		  String selectedValue = selected != null ? selected.toString() : null;
+
+		  // Update scope
+		  filter = EntryFilter.fromName(BudgetOverview.this, selectedValue);
+
+		  // Re-load the entries with the current filter/scope settings
+		  updateEntries();
+	    }
+
+	    @Override
+	    public void onNothingSelected(AdapterView<?> arg0) {
+	    }
+	 });
    }
 
    @Override
@@ -75,15 +116,20 @@ public class BudgetOverview extends BudgetBase {
 	    case BY_GROUP:
 		  newHeader = entry.getGroup();
 		  break;
+	    default:
+		  // Covers none and by date
+		  newHeader = DateTimeUtils.format(DateTimeUtils.toCalendar(entry.getDate()),
+			   DateTimeUtils.DATE_FORMAT);
+		  break;
 	    }
 	    if (!newHeader.equals(currentHeader)) {
 		  // Draw the group header if it's a new group
 		  TableRow header = (TableRow) getLayoutInflater().inflate(R.layout.w_table_row_header,
 			   null);
 		  TextView text = (TextView) header.findViewById(R.id.w_table_row_header_text);
-		  text.setText(entry.getGroup());
+		  text.setText(newHeader);
 		  table.addView(header);
-		  currentHeader = entry.getGroup();
+		  currentHeader = newHeader;
 	    }
 
 	    // Add the entry as a new row
@@ -122,28 +168,4 @@ public class BudgetOverview extends BudgetBase {
 	    table.addView(row);
 	 }
    }
-
-   @Override
-   public boolean onCreateOptionsMenu(Menu menu) {
-	 MenuInflater inflater = getMenuInflater();
-	 inflater.inflate(R.menu.m_budget_overview, menu);
-	 return true;
-   }
-
-   @Override
-   public boolean onOptionsItemSelected(MenuItem item) {
-	 switch (item.getItemId()) {
-	 case R.id.m_budget_overview_add_entry:
-	    // Open entry dialog
-	    startEditEntryDialog();
-	    return true;
-	 case R.id.m_budget_overview_budget_settings:
-	    // Open budget settings dialog
-	    startActivity(new Intent(this, BudgetSettings.class));
-	    return true;
-	 default:
-	    return super.onOptionsItemSelected(item);
-	 }
-   }
-
 }
