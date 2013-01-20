@@ -21,9 +21,9 @@ public class TabHostActivity extends TabActivity {
 	 Intent photosIntent = new Intent(this, BudgetOverview.class);
 	 photospec.setContent(photosIntent);
 
-	 TabSpec songspec = tabHost.newTabSpec(BudgetSettings.TAG);
-	 songspec.setIndicator(getString(R.string.budget_settings));
-	 Intent songsIntent = new Intent(this, BudgetSettings.class);
+	 TabSpec songspec = tabHost.newTabSpec(Settings.TAG);
+	 songspec.setIndicator(getString(R.string.settings));
+	 Intent songsIntent = new Intent(this, Settings.class);
 	 songspec.setContent(songsIntent);
 
 	 tabHost.addTab(photospec);

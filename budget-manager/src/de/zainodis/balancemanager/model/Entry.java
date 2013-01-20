@@ -35,6 +35,7 @@ public class Entry {
    @DatabaseField(columnName = EntryDao.GROUP_FIELD)
    private String group;
    @DatabaseField(columnName = EntryDao.IS_MONTHLY_FIELD)
+   // TODO change to isRecurring
    private boolean isMonthly = false;
    @DatabaseField(columnName = EntryDao.CASHFLOW_DIRECTION_FIELD, dataType = DataType.ENUM_INTEGER)
    private CashflowDirection cashflowDirection;

@@ -64,6 +64,10 @@ public abstract class BudgetBase extends FragmentActivity {
 	 startActivityForResult(intent, EditEntryDialog.REQUEST_CODE_EDIT_ENTRY);
    }
 
+   public void onAddEntry(View requestedBy) {
+	 startEditEntryDialog();
+   }
+
    @Override
    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	 super.onActivityResult(requestCode, resultCode, data);

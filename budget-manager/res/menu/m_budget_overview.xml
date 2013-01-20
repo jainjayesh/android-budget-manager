@@ -4,8 +4,5 @@
     <item
         android:id="@+id/m_budget_overview_add_entry"
         android:title="@string/add_entry"/>
-    <item
-        android:id="@+id/m_budget_overview_budget_settings"
-        android:title="@string/budget_settings"/>
 
 </menu>
