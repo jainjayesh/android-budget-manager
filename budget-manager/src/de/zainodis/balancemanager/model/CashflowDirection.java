@@ -1,5 +1,6 @@
 package de.zainodis.balancemanager.model;
 
+import android.content.Context;
 import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.core.Application;
 
@@ -14,28 +15,24 @@ public enum CashflowDirection {
    INCOME(Application.getInstance().getString(R.string.income)), EXPENSE(Application.getInstance()
 	    .getString(R.string.expenses));
 
-   private final String localized;
+   private final String name;
 
-   private CashflowDirection(String name) {
-	 localized = name;
+   private CashflowDirection(String value) {
+	 this.name = value;
    }
 
-   public String getLocalized() {
-	 return localized;
+   public String getUIName() {
+	 return name;
    }
 
-   public static CashflowDirection parse(String value) throws IllegalArgumentException {
-	 if (value == null || value.isEmpty()) {
-	    throw new IllegalArgumentException(
-			"Must provide a value when parsing the cashflow direction.");
-	 }
-
-	 if (value.equals(INCOME.getLocalized())) {
+   public static CashflowDirection fromName(Context context, String selectedValue) {
+	 if (INCOME.name.equals(selectedValue)) {
 	    return INCOME;
-	 } else if (value.equals(EXPENSE.getLocalized())) {
+	 } else if (EXPENSE.name.equals(selectedValue)) {
 	    return EXPENSE;
+	 } else {
+	    throw new IllegalArgumentException("No matching cashflow direction found for "
+			+ selectedValue);
 	 }
-	 throw new IllegalArgumentException("No matching cashflow direction found for " + value);
-
    }
 }

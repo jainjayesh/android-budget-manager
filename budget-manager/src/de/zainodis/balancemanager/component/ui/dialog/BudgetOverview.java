@@ -111,7 +111,7 @@ public class BudgetOverview extends BudgetBase {
 
 	    switch (filter) {
 	    case BY_CASHFLOW_DIRECTION:
-		  newHeader = entry.getCashflowDirection().name();
+		  newHeader = entry.getCashflowDirection().getUIName();
 		  break;
 	    case BY_GROUP:
 		  newHeader = entry.getGroup();

@@ -3,11 +3,13 @@ package de.zainodis.balancemanager.model.persistence;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
+import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
 import de.zainodis.balancemanager.model.EntryFilter;
@@ -34,8 +36,17 @@ public class EntryPersister extends Persister<EntryDao> {
     */
    public boolean save(Entry newEntry) {
 	 boolean result = false;
+	 // If there is no active budget cycle yet, create a new one
+	 long id = new BudgetCyclePersister().getActiveCyclesId();
+
+	 if (id == 0) {
+	    LogCat.i(TAG, "Created a new budget cycle before saving entry.");
+	    new BudgetCyclePersister().save(new BudgetCycle(new Date()));
+	    // Retrieve the new budget cycle's id
+	    id = new BudgetCyclePersister().getActiveCyclesId();
+	 }
 	 // Set the budget cycle id of the currently active cycle
-	 newEntry.setBudgetCycleId(new BudgetCyclePersister().getActiveCyclesId());
+	 newEntry.setBudgetCycleId(id);
 	 try {
 	    result = getDao().create(newEntry) == 1;
 	 } catch (SQLException e) {
@@ -110,7 +121,7 @@ public class EntryPersister extends Persister<EntryDao> {
    public CurrencyAmount getCurrentBudget() {
 	 // TODO optimize using SUM raw query
 	 CurrencyAmount result = new CurrencyAmount(0);
-	 Collection<Entry> entries = getFilteredEntries(EntryScope.ALL, EntryFilter.NONE);
+	 Collection<Entry> entries = getFilteredEntries(EntryScope.ALL, EntryFilter.BY_GROUP);
 
 	 for (Entry entry : entries) {
 	    if (CashflowDirection.EXPENSE.equals(entry.getCashflowDirection())) {

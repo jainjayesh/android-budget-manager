@@ -56,7 +56,7 @@ public abstract class BudgetBase extends FragmentActivity {
 	    boolean disableEditing) {
 	 Intent intent = new Intent(this, EditEntryDialog.class);
 	 if (direction != null) {
-	    intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getLocalized());
+	    intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getUIName());
 	 }
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, isMonthly);
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, disableEditing);

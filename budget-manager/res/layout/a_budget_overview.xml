@@ -11,7 +11,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:text="@string/show_following_entries"
             android:textSize="20sp" />
 
@@ -19,13 +19,13 @@
             android:id="@+id/a_budget_overview_spinner_scope"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:entries="@array/budget_scopes" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:text="@string/sort_by"
             android:textSize="20sp" />
 
@@ -33,7 +33,7 @@
             android:id="@+id/a_budget_overview_spinner_filter"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:entries="@array/budget_filters" />
 
         <include layout="@layout/w_divider" />
@@ -41,7 +41,7 @@
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:onClick="onAddEntry"
             android:text="@string/add_entry"
             android:textSize="18sp" />

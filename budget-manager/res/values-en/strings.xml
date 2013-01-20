@@ -44,6 +44,7 @@
     <string name="recurring_entries">Recurring entries</string>
     <string name="non_recurrent_entries">Non recurring entries</string>
     <string name="all">All</string>
+    <string name="no_sorting">No sorting</string>
     <string name="show_following_entries">Filter displayed entries by :</string>
     <string name="sort_by">Sort by the :</string>
 

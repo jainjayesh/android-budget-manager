@@ -42,12 +42,12 @@ public class EditEntryDialog extends Activity {
 	 boolean isEditingDisabled = intent.getBooleanExtra(INTENT_EXTRA_DISABLE_EDITING, false);
 
 	 if (intent.hasExtra(INTENT_EXTRA_CASHFLOW_DIRECTION)) {
-	    CashflowDirection direction = CashflowDirection.parse(intent
-			.getStringExtra(INTENT_EXTRA_CASHFLOW_DIRECTION));
+	    CashflowDirection direction = CashflowDirection.fromName(this,
+			intent.getStringExtra(INTENT_EXTRA_CASHFLOW_DIRECTION));
 
 	    Spinner cashflowSpinner = (Spinner) findViewById(R.id.d_edit_entry_cashflow_direction);
 	    SpinnerAdapter adapter = cashflowSpinner.getAdapter();
-	    String cashflowDirection = direction.getLocalized();
+	    String cashflowDirection = direction.getUIName();
 
 	    for (int i = 0; i < adapter.getCount(); i++) {
 		  if (cashflowDirection.equals(adapter.getItem(i).toString())) {
@@ -98,7 +98,7 @@ public class EditEntryDialog extends Activity {
    private void onSave() {
 	 CurrencyAmount amount = ((CurrencyField) findViewById(R.id.d_edit_entry_amount)).getAmount();
 	 String group = String.valueOf(((TextView) findViewById(R.id.d_edit_entry_group)).getText());
-	 CashflowDirection direction = CashflowDirection.parse(String
+	 CashflowDirection direction = CashflowDirection.fromName(this, String
 		  .valueOf(((Spinner) findViewById(R.id.d_edit_entry_cashflow_direction))
 			   .getSelectedItem()));
 	 boolean isMonthly = ((CheckBox) findViewById(R.id.d_edit_entry_is_monthly)).isChecked();
