@@ -15,11 +15,12 @@
             android:text="@string/group"
             android:textSize="20sp" />
 
-        <de.zainodis.commons.component.ui.widget.AutoShowAutoCompleteTextView
+        <AutoCompleteTextView
             android:id="@+id/d_edit_entry_group"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:completionThreshold="1"
             android:textSize="18sp" />
 
         <TextView
@@ -29,12 +30,11 @@
             android:text="@string/amount"
             android:textSize="20sp" />
 
-        <de.zainodis.commons.component.ui.widget.CurrencyField
+        <de.zainodis.commons.component.ui.widget.SplitCurrencyField
             android:id="@+id/d_edit_entry_amount"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="18sp" />
+            android:layout_margin="10dp" />
 
         <CheckBox
             android:id="@+id/d_edit_entry_is_monthly"

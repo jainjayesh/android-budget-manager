@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import de.zainodis.balancemanager.model.persistence.GroupDao;
+import de.zainodis.commons.utils.StringUtils;
 
 /**
  * Basically a suggestion list for names of any type of cashflow
@@ -41,5 +42,18 @@ public class Group {
 
    public boolean isFixed() {
 	 return isFixed;
+   }
+
+   /**
+    * Removes leading and trailing whitespace from the name.
+    */
+   public void trim() {
+	 if (name != null) {
+	    /*
+	     * Remove spaces, tabs and new lines from the beginning and end of the
+	     * word.
+	     */
+	    name = StringUtils.trim(name);
+	 }
    }
 }
