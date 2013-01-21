@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <release-notes version="1.0.3">
 
+	<release version="1.0.4">
+		<item text="Beim Anlegen neuer Gruppen werden nun Leerzeichen am Anfang und Ende des Wortes entfernt."/>		
+		<item text="Die Vorschlagsliste wurde optisch verbessert und poppt nun nicht mehr direkt ins Bild wenn sich der Editierdialog öffnet."/>		
+		<item text="das Betragsfeld besteht nun aus zwei Teilen, im ersten Teil wird die Vorkommastelle angegeben, im anderen die Nachkommastelle."/>		
+	</release>
+
 	<release version="1.0.3">
 		<item text="Komplette Überarbeitung des Benutzerinterfaces."/>		
 	</release>

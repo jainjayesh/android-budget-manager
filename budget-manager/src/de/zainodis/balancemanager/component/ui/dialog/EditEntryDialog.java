@@ -18,7 +18,7 @@ import de.zainodis.balancemanager.model.Entry;
 import de.zainodis.balancemanager.model.Group;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.balancemanager.model.persistence.GroupPersister;
-import de.zainodis.commons.component.ui.widget.CurrencyField;
+import de.zainodis.commons.component.ui.widget.SplitCurrencyField;
 import de.zainodis.commons.model.CurrencyAmount;
 
 public class EditEntryDialog extends Activity {
@@ -70,9 +70,8 @@ public class EditEntryDialog extends Activity {
 
 	 AutoCompleteTextView groupField = (AutoCompleteTextView) findViewById(R.id.d_edit_entry_group);
 	 // Retrieve suggestion for the group
-	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-		  android.R.layout.simple_list_item_1, new ArrayList<String>(
-			   new GroupPersister().getAll()));
+	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.w_list_item,
+		  new ArrayList<String>(new GroupPersister().getAll()));
 	 // Set the suggestions via the adapter
 	 groupField.setAdapter(adapter);
 	 adapter.notifyDataSetChanged();
@@ -96,7 +95,10 @@ public class EditEntryDialog extends Activity {
    }
 
    private void onSave() {
-	 CurrencyAmount amount = ((CurrencyField) findViewById(R.id.d_edit_entry_amount)).getAmount();
+	 // TODO implement validity check
+	 CurrencyAmount amount = ((SplitCurrencyField) findViewById(R.id.d_edit_entry_amount))
+		  .getAmount();
+
 	 String group = String.valueOf(((TextView) findViewById(R.id.d_edit_entry_group)).getText());
 	 CashflowDirection direction = CashflowDirection.fromName(this, String
 		  .valueOf(((Spinner) findViewById(R.id.d_edit_entry_cashflow_direction))
@@ -107,10 +109,8 @@ public class EditEntryDialog extends Activity {
 	 new EntryPersister().save(entry);
 	 // Persist group
 	 new GroupPersister().save(new Group(group));
-	 // Close the dialog
-	 Intent result = getIntent();
-	 // Add extras to the returned intent
 
+	 // Wrap this up, we're done
 	 setResult(RESULT_OK);
 	 finish();
    }
