@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5" >
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/one" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/two" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/three" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_four"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/four" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/back" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5" >
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_five"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/five" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_six"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/six" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_seven"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/seven" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_eight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/eight" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/done" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="5" >
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_nine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/nine" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_zero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/zero" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_comma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/comma" />
+
+        <ImageButton
+            android:id="@+id/w_currency_keyboard_dot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:scaleType="center"
+            android:src="@drawable/dot" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:scaleType="center"
+            android:src="@drawable/empty" />
+    </LinearLayout>
+
+</LinearLayout>

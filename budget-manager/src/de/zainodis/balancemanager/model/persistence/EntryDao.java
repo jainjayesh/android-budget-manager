@@ -80,7 +80,7 @@ public class EntryDao extends BaseDaoImpl<Entry, Long> {
 	 Collection<String> result = new HashSet<String>();
 	 QueryBuilder<Entry, Long> builder = queryBuilder();
 	 long cycleId = new BudgetCyclePersister().getActiveCyclesId();
-	 if (cycleId > 0) {
+	 if (cycleId == 0) {
 	    builder.where().eq(FK_BUDGET_CYCLE_ID_FIELD, cycleId);
 	    builder.selectColumns(GROUP_FIELD);
 	    List<Entry> queryResult = query(builder.distinct().prepare());

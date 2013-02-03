@@ -3,8 +3,10 @@ package de.zainodis.balancemanager.component.ui.dialog;
 import static junit.framework.Assert.assertTrue;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +14,11 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.BudgetCycle;
+import de.zainodis.balancemanager.model.BundleAttributes;
+import de.zainodis.balancemanager.model.Setting;
+import de.zainodis.balancemanager.model.options.LocaleOption;
 import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
+import de.zainodis.balancemanager.model.persistence.SettingPersister;
 import de.zainodis.commons.LogCat;
 import de.zainodis.commons.component.ui.widget.DatePickerFragment;
 import de.zainodis.commons.utils.DateTimeUtils;
@@ -79,6 +85,32 @@ public class Settings extends BudgetBase {
 	 picker.show(getSupportFragmentManager(), TAG);
    }
 
+   public void onSelectCurrency(View requestedBy) {
+	 // Start the select currency dialog
+	 startActivityForResult(new Intent(this, SelectCurrency.class),
+		  RequestCodes.SELECT_CURRENCY_REQUEST_CODE);
+   }
+
+   @Override
+   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	 if (requestCode == RequestCodes.SELECT_CURRENCY_REQUEST_CODE) {
+	    if (resultCode == RESULT_OK) {
+		  // Retrieve selected locale
+		  Locale locale = (Locale) data.getSerializableExtra(BundleAttributes.OBJECT);
+		  // Create or update the setting
+		  LocaleOption option = new LocaleOption(locale);
+		  if (new SettingPersister().save(new Setting(option.getOptionName(), option.format()))) {
+			LogCat.i(
+				 TAG,
+				 String.format("Saved option %s with value %s", option.getOptionName(),
+					  option.format()));
+		  }
+
+	    }
+	 }
+	 super.onActivityResult(requestCode, resultCode, data);
+   }
+
    /**
     * Loads the given budget cycle.
     * 
@@ -99,7 +131,6 @@ public class Settings extends BudgetBase {
 
    @Override
    protected void updateEntries() {
-
    }
 
 }

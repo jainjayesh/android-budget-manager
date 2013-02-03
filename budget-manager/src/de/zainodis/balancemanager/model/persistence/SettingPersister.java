@@ -4,14 +4,16 @@ import java.sql.SQLException;
 
 import com.j256.ormlite.table.TableUtils;
 
-import de.zainodis.balancemanager.model.Group;
 import de.zainodis.balancemanager.model.Setting;
 import de.zainodis.balancemanager.persistence.Persister;
 import de.zainodis.commons.LogCat;
+import de.zainodis.commons.communication.local.CallbackPort;
 
 public class SettingPersister extends Persister<SettingDao> {
 
    private static final String TAG = "SettingPersister";
+
+   public static final CallbackPort OnSettingsUpdated = new CallbackPort(Setting.class);
 
    @Override
    protected SettingDao getDao() throws SQLException {
@@ -27,11 +29,16 @@ public class SettingPersister extends Persister<SettingDao> {
     */
    public boolean save(Setting toSave) {
 	 try {
-	    return getDao().save(toSave) == 1;
+	    int rowsAltered = getDao().save(toSave);
+	    if (rowsAltered == 1) {
+		  // Notify subscribers
+		  OnSettingsUpdated.send(toSave);
+		  return true;
+	    }
 	 } catch (SQLException e) {
 	    LogCat.e(TAG, "save failed.", e);
-	    return false;
 	 }
+	 return false;
    }
 
    /**

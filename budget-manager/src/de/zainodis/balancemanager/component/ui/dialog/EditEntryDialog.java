@@ -2,6 +2,7 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import java.util.ArrayList;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +19,12 @@ import de.zainodis.balancemanager.model.Entry;
 import de.zainodis.balancemanager.model.Group;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.balancemanager.model.persistence.GroupPersister;
+import de.zainodis.commons.component.ui.widget.CurrencyField;
 import de.zainodis.commons.component.ui.widget.SplitCurrencyField;
 import de.zainodis.commons.model.CurrencyAmount;
 
 public class EditEntryDialog extends Activity {
 
-   public static final int REQUEST_CODE_EDIT_ENTRY = 1;
    /** Expected as a {@link Boolean} */
    public static final String INTENT_EXTRA_IS_MONTHLY = "is-monthly";
    /** Expected as a {@link String} */
@@ -70,7 +71,7 @@ public class EditEntryDialog extends Activity {
 
 	 AutoCompleteTextView groupField = (AutoCompleteTextView) findViewById(R.id.d_edit_entry_group);
 	 // Retrieve suggestion for the group
-	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.w_list_item,
+	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.w_suggestion,
 		  new ArrayList<String>(new GroupPersister().getAll()));
 	 // Set the suggestions via the adapter
 	 groupField.setAdapter(adapter);
@@ -96,8 +97,7 @@ public class EditEntryDialog extends Activity {
 
    private void onSave() {
 	 // TODO implement validity check
-	 CurrencyAmount amount = ((SplitCurrencyField) findViewById(R.id.d_edit_entry_amount))
-		  .getAmount();
+	 CurrencyAmount amount = ((CurrencyField) findViewById(R.id.d_edit_entry_amount)).getAmount();
 
 	 String group = String.valueOf(((TextView) findViewById(R.id.d_edit_entry_group)).getText());
 	 CashflowDirection direction = CashflowDirection.fromName(this, String

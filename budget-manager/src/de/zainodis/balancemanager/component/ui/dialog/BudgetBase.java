@@ -49,7 +49,7 @@ public abstract class BudgetBase extends FragmentActivity {
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, false);
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, false);
 
-	 startActivityForResult(intent, EditEntryDialog.REQUEST_CODE_EDIT_ENTRY);
+	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);
    }
 
    protected void startEditEntryDialog(boolean isMonthly, CashflowDirection direction,
@@ -61,7 +61,7 @@ public abstract class BudgetBase extends FragmentActivity {
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, isMonthly);
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, disableEditing);
 
-	 startActivityForResult(intent, EditEntryDialog.REQUEST_CODE_EDIT_ENTRY);
+	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);
    }
 
    public void onAddEntry(View requestedBy) {
@@ -72,7 +72,7 @@ public abstract class BudgetBase extends FragmentActivity {
    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	 super.onActivityResult(requestCode, resultCode, data);
 	 switch (requestCode) {
-	 case EditEntryDialog.REQUEST_CODE_EDIT_ENTRY:
+	 case RequestCodes.REQUEST_CODE_EDIT_ENTRY:
 	    switch (resultCode) {
 	    case RESULT_OK:
 		  LogCat.i(TAG, "New entry has been created, updating ui...");

@@ -136,7 +136,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
     *           the statements to execute.
     * @param sqliteDatabase
     *           the database to perform the upgrade on.
-    * @return the number of statements that have been executed; or -1 if an
+    * @return the number of statements that have been executed; or zero if an
     *         error occurred during the execution of the statements.
     */
    protected int executeAsTransaction(List<String> statements, SQLiteDatabase sqliteDatabase) {

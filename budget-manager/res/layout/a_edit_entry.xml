@@ -21,6 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:completionThreshold="1"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
             android:textSize="18sp" />
 
         <TextView
@@ -30,7 +32,7 @@
             android:text="@string/amount"
             android:textSize="20sp" />
 
-        <de.zainodis.commons.component.ui.widget.SplitCurrencyField
+        <de.zainodis.balancemanager.component.ui.widget.CustomCurrencyField
             android:id="@+id/d_edit_entry_amount"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
