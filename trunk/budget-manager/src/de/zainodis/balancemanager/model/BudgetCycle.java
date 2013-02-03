@@ -2,12 +2,17 @@ package de.zainodis.balancemanager.model;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import de.zainodis.balancemanager.component.LocaleComponent;
+import de.zainodis.balancemanager.core.Application;
+import de.zainodis.balancemanager.model.options.LocaleOption;
 import de.zainodis.balancemanager.model.persistence.BudgetCycleDao;
+import de.zainodis.commons.model.CurrencyAmount;
 import de.zainodis.commons.utils.DateTimeUtils;
 
 /**
@@ -29,6 +34,14 @@ public class BudgetCycle {
    private Date end;
    @DatabaseField(columnName = BudgetCycleDao.HAS_ENDED_FIELD)
    private boolean hasEnded = false;
+   /**
+    * The locale with which this cycle was created, so it can be re-constructed
+    * by {@link LocaleOption}. Each cycle has only one locale based on which the
+    * currencie's are processed. If the currency is changed, a new cycle has to
+    * be started.
+    */
+   @DatabaseField(columnName = BudgetCycleDao.LOCALE_FIELD)
+   private String locale;
 
    protected BudgetCycle() {
 	 // for ormlite
@@ -40,6 +53,10 @@ public class BudgetCycle {
 	 Calendar result = DateTimeUtils.toCalendar(this.start);
 	 // Advance by one month, this way we'll know our end-date
 	 result.add(Calendar.MONTH, 1);
+	 // Set the locale to either default or the one set in the options
+	 Locale cyclesLocale = Application.getInstance().getComponent(LocaleComponent.class)
+		  .getLocale();
+	 this.locale = new LocaleOption(cyclesLocale).format();
    }
 
    public Date getStart() {
@@ -52,6 +69,18 @@ public class BudgetCycle {
 
    public long getId() {
 	 return id;
+   }
+
+   public Locale getLocale() {
+	 return new LocaleOption(locale).getValue();
+   }
+
+   /**
+    * @return an instance of {@link CurrencyAmount} initialised to zero with the
+    *         locale of this {@link BudgetCycle}.
+    */
+   public CurrencyAmount createEmptyCurrency() {
+	 return new CurrencyAmount(0, getLocale());
    }
 
    /**

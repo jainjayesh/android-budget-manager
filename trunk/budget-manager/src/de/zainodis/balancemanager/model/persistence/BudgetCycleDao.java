@@ -27,6 +27,7 @@ public class BudgetCycleDao extends BaseDaoImpl<BudgetCycle, Long> {
    public static final String START_FIELD = "start";
    public static final String END_FIELD = "end";
    public static final String HAS_ENDED_FIELD = "has-ended";
+   public static final String LOCALE_FIELD = "locale";
 
    public BudgetCycleDao(ConnectionSource connectionSource) throws SQLException {
 	 super(connectionSource, BudgetCycle.class);

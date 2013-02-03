@@ -41,8 +41,8 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
     * 
     * @param createNew
     *           if true a new cycle will be created, if none exists.
-    * @return the unique id, of the currently active {@link BudgetCycle}; zero
-    *         if an error occurred.
+    * @return the unique id, of the currently active {@link BudgetCycle};zero if
+    *         an error occurred.
     */
    public long getActiveCyclesId() {
 	 try {
@@ -50,6 +50,7 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
 	    long currentCyclesId = dao.getActiveCyclesId();
 	    if (currentCyclesId == 0) {
 		  LogCat.w(TAG, "No active budget cycle available.");
+		  return 0;
 	    }
 	    return currentCyclesId;
 
@@ -78,7 +79,7 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
     * 
     * @return true, if there is an ongoing budget cycle; false otherwise.
     */
-   public boolean hasOngoingCycleExists() {
+   public boolean hasOngoingCycle() {
 	 return getActiveCycle() != null;
 
    }
@@ -94,8 +95,8 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
 
    /**
     * 
-    * @return the id of the last budget cycle; zero if there was none or an
-    *         error occurred.
+    * @return the id of the last budget cycle; zero if there is none or an error
+    *         occurred.
     */
    public long getLastCyclesId() {
 	 try {

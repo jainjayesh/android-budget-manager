@@ -47,6 +47,9 @@
     <string name="no_sorting">Keine Sortierung</string>
     <string name="show_following_entries">Zeige folgende Positionen an :</string>
     <string name="sort_by">Sortiere nach :</string>
+    <string name="select_currency">Anzeigewährung auswählen</string>
+    <string name="changing_the_currency_will_create_a_new_cycle">Wenn sie eine andere Währung wählen, wird ein neuer Budget Zyklus begonnen und alle wiederkehrenden Positionen werden nicht in den neuen Zyklus übernommen.</string>
+    <string name="proceed">Fortfahren</string>
 
     <string-array name="budget_filters">
         <item>@string/group</item>

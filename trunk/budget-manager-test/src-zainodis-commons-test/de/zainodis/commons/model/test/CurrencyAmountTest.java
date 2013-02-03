@@ -77,4 +77,13 @@ public class CurrencyAmountTest extends TestCase {
 	 assertTrue(CurrencyAmount.getDecimalSeparator(Locale.US) == '.');
 
    }
+
+   public void testGetCurrencySymbol() throws Exception {
+	 assertTrue(CurrencyAmount.getCurrencySymbol(
+		  new Locale(Locale.UK.getLanguage(), Locale.UK.getCountry())).equals("£"));
+	 assertTrue(CurrencyAmount.getCurrencySymbol(
+		  new Locale(Locale.GERMANY.getLanguage(), Locale.GERMANY.getCountry())).equals("€"));
+	 assertTrue(CurrencyAmount.getCurrencySymbol(
+		  new Locale(Locale.US.getLanguage(), Locale.US.getCountry())).equals("$"));
+   }
 }

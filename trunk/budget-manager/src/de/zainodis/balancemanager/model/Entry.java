@@ -1,7 +1,6 @@
 package de.zainodis.balancemanager.model;
 
 import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 import java.util.Date;
 
@@ -86,7 +85,6 @@ public class Entry {
 
    public void setBudgetCycleId(long budgetCycleId) {
 	 assertEquals("Once set, the budget cycle id must not be changed.", fkBudgetCycleId, 0);
-	 assertTrue("Zero is not a valid budget cycle id.", budgetCycleId != 0);
 	 this.fkBudgetCycleId = budgetCycleId;
    }
 }

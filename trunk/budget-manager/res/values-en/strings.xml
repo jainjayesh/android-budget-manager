@@ -46,7 +46,11 @@
     <string name="all">All</string>
     <string name="no_sorting">No sorting</string>
     <string name="show_following_entries">Filter displayed entries by :</string>
-    <string name="sort_by">Sort by the :</string>
+    <string name="sort_by">Sort by :</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="warning">Warning</string>
+    <string name="changing_the_currency_will_create_a_new_cycle">If you proceed with changing the currency, a new budget cycle will automatically be started. Recurring entries won\'t be carried over to the new cycle due to different crrencies.</string>
+    <string name="proceed">proceed</string>
 
     <string-array name="budget_filters">
         <item>@string/group</item>

@@ -1,15 +1,24 @@
 package de.zainodis.balancemanager.core;
 
 import android.content.Context;
+import de.zainodis.balancemanager.component.LocaleComponent;
+import de.zainodis.commons.component.Component;
+import de.zainodis.commons.component.Entity;
+import de.zainodis.commons.component.IEntity;
 
 public class Application extends android.app.Application {
 
    private static Application self = null;
 
+   protected IEntity rootEntity = new Entity();
+
    @Override
    public void onCreate() {
 	 super.onCreate();
 	 self = this;
+
+	 // Add required components
+	 rootEntity.addComponent(new LocaleComponent(rootEntity));
    }
 
    /**
@@ -21,5 +30,9 @@ public class Application extends android.app.Application {
     */
    public static Application getInstance() {
 	 return self;
+   }
+
+   public <T extends Component> T getComponent(Class<T> requested) {
+	 return rootEntity.getComponent(requested);
    }
 }
