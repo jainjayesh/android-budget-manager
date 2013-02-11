@@ -15,9 +15,9 @@ import android.widget.TextView;
 import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
-import de.zainodis.balancemanager.model.Group;
+import de.zainodis.balancemanager.model.Category;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
-import de.zainodis.balancemanager.model.persistence.GroupPersister;
+import de.zainodis.balancemanager.model.persistence.CategoryPersister;
 import de.zainodis.commons.component.ui.widget.CurrencyField;
 import de.zainodis.commons.model.CurrencyAmount;
 
@@ -67,12 +67,12 @@ public class EditEntryDialog extends Activity {
 	    }
 	 }
 
-	 AutoCompleteTextView groupField = (AutoCompleteTextView) findViewById(R.id.d_edit_entry_group);
-	 // Retrieve suggestion for the group
+	 AutoCompleteTextView categoryField = (AutoCompleteTextView) findViewById(R.id.d_edit_entry_category);
+	 // Retrieve suggestion for the category
 	 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.w_suggestion,
-		  new ArrayList<String>(new GroupPersister().getAll()));
+		  new ArrayList<String>(new CategoryPersister().getAll()));
 	 // Set the suggestions via the adapter
-	 groupField.setAdapter(adapter);
+	 categoryField.setAdapter(adapter);
 	 adapter.notifyDataSetChanged();
 
 	 // Add on click listener for save and cancel
@@ -97,16 +97,17 @@ public class EditEntryDialog extends Activity {
 	 // TODO implement validity check
 	 CurrencyAmount amount = ((CurrencyField) findViewById(R.id.d_edit_entry_amount)).getAmount();
 
-	 String group = String.valueOf(((TextView) findViewById(R.id.d_edit_entry_group)).getText());
+	 String category = String.valueOf(((TextView) findViewById(R.id.d_edit_entry_category))
+		  .getText());
 	 CashflowDirection direction = CashflowDirection.fromName(this, String
 		  .valueOf(((Spinner) findViewById(R.id.d_edit_entry_cashflow_direction))
 			   .getSelectedItem()));
 	 boolean isRecurring = ((CheckBox) findViewById(R.id.d_edit_entry_is_recurring)).isChecked();
-	 Entry entry = new Entry(direction, group, isRecurring, amount);
+	 Entry entry = new Entry(direction, category, isRecurring, amount);
 	 // Persist the new entry to the database
 	 new EntryPersister().save(entry);
-	 // Persist group
-	 new GroupPersister().save(new Group(group));
+	 // Persist category
+	 new CategoryPersister().save(new Category(category));
 
 	 // Wrap this up, we're done
 	 setResult(RESULT_OK);

@@ -14,12 +14,12 @@ import com.j256.ormlite.table.TableUtils;
 
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.Entry;
-import de.zainodis.balancemanager.model.Group;
+import de.zainodis.balancemanager.model.Category;
 import de.zainodis.balancemanager.model.Setting;
 import de.zainodis.balancemanager.model.persistence.BudgetCycleDao;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
-import de.zainodis.balancemanager.model.persistence.GroupDao;
-import de.zainodis.balancemanager.model.persistence.GroupPersister;
+import de.zainodis.balancemanager.model.persistence.CategoryDao;
+import de.zainodis.balancemanager.model.persistence.CategoryPersister;
 import de.zainodis.balancemanager.model.persistence.SettingDao;
 import de.zainodis.commons.LogCat;
 
@@ -32,7 +32,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
    // Name of the applications database file
    private static String DATABASE_NAME = "balance-manager.db";
 
-   private GroupDao groupDao = null;
+   private CategoryDao categoryDao = null;
    private EntryDao entryDao = null;
    private SettingDao settingDao = null;
    private BudgetCycleDao budgetCycleDao = null;
@@ -49,12 +49,12 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
    public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
 	 try {
 	    TableUtils.createTable(connectionSource, Entry.class);
-	    TableUtils.createTable(connectionSource, Group.class);
+	    TableUtils.createTable(connectionSource, Category.class);
 	    TableUtils.createTable(connectionSource, Setting.class);
 	    TableUtils.createTable(connectionSource, BudgetCycle.class);
 
 	    // Persist a set of standard suggestions
-	    new GroupPersister().saveStandardGroups();
+	    new CategoryPersister().saveStandardCategories();
 
 	    Log.i(TAG, "Created and initialized database " + DATABASE_NAME);
 
@@ -81,11 +81,11 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
 	 return entryDao;
    }
 
-   public GroupDao getGroupDao() throws SQLException {
-	 if (groupDao == null) {
-	    groupDao = getDao(Group.class);
+   public CategoryDao getCategoryDao() throws SQLException {
+	 if (categoryDao == null) {
+	    categoryDao = getDao(Category.class);
 	 }
-	 return groupDao;
+	 return categoryDao;
    }
 
    public SettingDao getSettingDao() throws SQLException {
@@ -109,7 +109,7 @@ public class DatabaseManager extends OrmLiteSqliteOpenHelper {
    public void close() {
 	 super.close();
 	 // Reset all cached daos
-	 groupDao = null;
+	 categoryDao = null;
 	 entryDao = null;
 	 settingDao = null;
 	 budgetCycleDao = null;

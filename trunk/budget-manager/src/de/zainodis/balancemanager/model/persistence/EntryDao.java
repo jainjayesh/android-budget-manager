@@ -68,15 +68,16 @@ public class EntryDao extends BaseDaoImpl<Entry, Long> {
 
    /**
     * @param recurringOnly
-    *           if set to true, only the groups of recurring entries are returned;
-    *           otherwise only the groups of non-recurring entries are returned.
-    * @return A collection of all groups that are used in the entrie's for the
-    *         currently active cycle; an empty list if there are either no
+    *           if set to true, only the categories of recurring entries are
+    *           returned; otherwise only the categories of non-recurring entries
+    *           are returned.
+    * @return A collection of all categories that are used in the entrie's for
+    *         the currently active cycle; an empty list if there are either no
     *         entries, or if there is no currently active {@link BudgetCycle}.
     * @throws SQLException
     *            on error.
     */
-   public Collection<String> getEntriesGroups(boolean recurringOnly) throws SQLException {
+   public Collection<String> getEntryCategories(boolean recurringOnly) throws SQLException {
 	 Collection<String> result = new HashSet<String>();
 	 QueryBuilder<Entry, Long> builder = queryBuilder();
 	 long cycleId = new BudgetCyclePersister().getActiveCyclesId();
