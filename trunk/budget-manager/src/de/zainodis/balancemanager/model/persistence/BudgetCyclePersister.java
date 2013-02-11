@@ -1,6 +1,7 @@
 package de.zainodis.balancemanager.model.persistence;
 
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.TableUtils;
@@ -116,6 +117,40 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
 	 }
 
 	 return 0;
+   }
+
+   /**
+    * Deletes all budget cycles and their associated entries, which are older
+    * than the given date and have already ended.
+    * 
+    * @param olderThan
+    *           entries older than the given date may be cleared.
+    * @return the number of budget cycles that have been cleared; minus one if
+    *         an error occurred.
+    */
+   public int delete(Date olderThan) {
+	 try {
+	    return getDao().delete(olderThan);
+
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "clearOldBudgetCycles failed.", e);
+	    return -1;
+	 }
+   }
+
+   /**
+    * 
+    * @return the number of budget cycles stored in the database; -1 if an error
+    *         occurred.
+    */
+   public long count() {
+	 try {
+	    return getDao().countOf();
+
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "count failed.", e);
+	    return -1;
+	 }
    }
 
    public void clearTable() {

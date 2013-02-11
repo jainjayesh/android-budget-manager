@@ -112,4 +112,34 @@ public class BudgetCycleDao extends BaseDaoImpl<BudgetCycle, Long> {
 	 }
 	 return result;
    }
+
+   /**
+    * Deletes all budget cycles and their associated entries, which are older
+    * than the given date.
+    * 
+    * @param olderThan
+    *           entries older than the given date may be cleared.
+    * @return the number of budget cycles that have been cleared.
+    * @throws SQLException
+    *            on error.
+    */
+   public int delete(Date olderThan) throws SQLException {
+	 int result = 0;
+
+	 QueryBuilder<BudgetCycle, Long> builder = queryBuilder();
+	 builder.selectColumns(ID_FIELD, START_FIELD, HAS_ENDED_FIELD);
+
+	 for (BudgetCycle cycle : query(builder.prepare())) {
+	    // Only delete cycles that have already ended
+	    if (cycle.getStart().before(olderThan) && cycle.hasEnded()) {
+		  // Delete all associated entries
+		  new EntryPersister().getDao().deleteEntries(cycle.getId());
+		  // Delete the cycle itself
+		  deleteById(cycle.getId());
+		  result++;
+	    }
+	 }
+	 return result;
+   }
+
 }
