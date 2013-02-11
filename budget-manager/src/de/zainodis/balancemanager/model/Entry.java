@@ -31,11 +31,10 @@ public class Entry {
    private Date date;
    @DatabaseField(columnName = EntryDao.AMOUNT_FIELD, persisterClass = CurrencyType.class)
    private CurrencyAmount amount = new CurrencyAmount(0);
-   @DatabaseField(columnName = EntryDao.GROUP_FIELD)
-   private String group;
-   @DatabaseField(columnName = EntryDao.IS_MONTHLY_FIELD)
-   // TODO change to isRecurring
-   private boolean isMonthly = false;
+   @DatabaseField(columnName = EntryDao.CATEGORY_FIELD)
+   private String category;
+   @DatabaseField(columnName = EntryDao.IS_RECURRING_FIELD)
+   private boolean isRecurring = false;
    @DatabaseField(columnName = EntryDao.CASHFLOW_DIRECTION_FIELD, dataType = DataType.ENUM_INTEGER)
    private CashflowDirection cashflowDirection;
 
@@ -43,15 +42,15 @@ public class Entry {
 	 // for ormlite
    }
 
-   public Entry(CashflowDirection direction, String group, boolean isMonthly, CurrencyAmount amount) {
+   public Entry(CashflowDirection direction, String category, boolean isRecurring, CurrencyAmount amount) {
 	 this.date = new Date();
-	 this.isMonthly = isMonthly;
+	 this.isRecurring = isRecurring;
 	 if (amount == null) {
 	    this.amount = new CurrencyAmount(0);
 	 } else {
 	    this.amount = amount;
 	 }
-	 this.group = group;
+	 this.category = category;
 	 this.cashflowDirection = direction;
    }
 
@@ -75,12 +74,12 @@ public class Entry {
 	 return cashflowDirection;
    }
 
-   public boolean isMonthly() {
-	 return isMonthly;
+   public boolean isRecurring() {
+	 return isRecurring;
    }
 
-   public String getGroup() {
-	 return group;
+   public String getCategory() {
+	 return category;
    }
 
    public void setBudgetCycleId(long budgetCycleId) {

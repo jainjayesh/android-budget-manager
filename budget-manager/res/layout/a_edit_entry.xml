@@ -39,7 +39,7 @@
             android:layout_margin="10dp" />
 
         <CheckBox
-            android:id="@+id/d_edit_entry_is_monthly"
+            android:id="@+id/d_edit_entry_is_recurring"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

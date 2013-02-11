@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Budget Manager</string>
+    <string name="settings">Einstellungen</string>
+    <string name="save">Speichern</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="budget_overview">Budgetübersicht</string>
+    <string name="please_wait">Bitte warten</string>
+    <string name="launching_application">Anwendung wird gestartet</string>
+    <string name="beginning_of_budget_cycle">Beginn des Budget Zyklus</string>
+    <string name="end_of_budget_cycle">Ende des Budget Zyklus</string>
+    <string name="recurring_income">Wiederkehrende Einnahmen</string>
+    <string name="recurring_expenses">Wiederkehrende Ausgaben</string>
+    <string name="add">Hinzufügen</string>
+    <string name="delete">Löschen</string>
+    <string name="amount">Betrag</string>
+    <string name="group">Gruppe</string>
+    <string name="entry_details" formatted="false">%s für %s, hinzugefügt am %s</string>
+    <string name="is_recurring">Wiederkehrender Betrag</string>
+    <string name="cashflow_direction">Haushaltsmittel</string>
+    <string name="income">Einnahmen</string>
+    <string name="expenses">Ausgaben</string>
+    <string name="edit_entry">Haushaltsmittel bearbeiten</string>
+    <string name="medicine">Medizin</string>
+    <string name="clothes">Kleidung</string>
+    <string name="groceries">Lebensmittel</string>
+    <string name="accessories">Zubehörteile/Gadgets</string>
+    <string name="travel">Reisen</string>
+    <string name="pets">Haustiere/Zubehör</string>
+    <string name="books">Bücher</string>
+    <string name="presents">Geschenke</string>
+    <string name="rent">Miete</string>
+    <string name="date">Datum</string>
+    <string name="insurance">Versicherungen</string>
+    <string name="salary">Gehalt</string>
+    <string name="available_budget">Verfügbares Budget</string>
+    <string name="reset_settings">Einstellungen Zurücksetzen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="add_entry">Position hinzufügen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="start_new_cycle">Neuen Budget Zyklus starten</string>
+    <string name="no_active_cycle_available">Derzeit gibt es keinen aktiven Budget Zyklus. Sie können manuell einen neuen starten oder einfach, indem Sie eine neue Position hinzufügen.</string>
+    <string name="recurring_entries">Wiederkehrende Positionen</string>
+    <string name="non_recurrent_entries">Einmalige Positionen</string>
+    <string name="all">Alle</string>
+    <string name="no_sorting">Keine Sortierung</string>
+    <string name="show_following_entries">Zeige folgende Positionen an :</string>
+    <string name="sort_by">Sortiere nach :</string>
+    <string name="select_currency">Anzeigewährung auswählen</string>
+    <string name="changing_the_currency_will_create_a_new_cycle">Wenn sie eine andere Währung wählen, wird ein neuer Budget Zyklus begonnen und alle wiederkehrenden Positionen werden nicht in den neuen Zyklus übernommen.</string>
+    <string name="proceed">Fortfahren</string>
+    <string name="feature_not_supported">Dieses Feature wird von ihrer Android Version nicht unterstützt</string>
+
+    <string-array name="budget_filters">
+        <item>@string/group</item>
+        <item>@string/date</item>
+        <item>@string/cashflow_direction</item>
+    </string-array>
+    <string-array name="budget_scopes">
+        <item>@string/all</item>
+        <item>@string/recurring_entries</item>
+        <item>@string/non_recurrent_entries</item>
+    </string-array>
+    <string-array name="casfhlow_direction_suggestions">
+        <item>@string/expenses</item>
+        <item>@string/income</item>
+    </string-array>
+
+</resources>
