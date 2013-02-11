@@ -1,6 +1,7 @@
 package de.zainodis.balancemanager.model.persistence;
 
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -29,6 +30,12 @@ public class BudgetCyclePersister extends Persister<BudgetCycleDao> {
     */
    public boolean save(BudgetCycle newCycle) {
 	 try {
+	    // Delete entries older than 6 months
+	    Calendar now = Calendar.getInstance();
+	    now.add(Calendar.MONTH, -6);
+	    delete(now.getTime());
+
+	    // Save the new cycle
 	    return getDao().save(newCycle);
 	 } catch (SQLException e) {
 	    LogCat.e(TAG, "save failed.", e);
