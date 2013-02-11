@@ -88,16 +88,25 @@ public class BudgetCycleDao extends BaseDaoImpl<BudgetCycle, Long> {
 	 return update(builder.prepare());
    }
 
+   /**
+    * Saves the given {@link BudgetCycle} and adds all recurring entries to it.
+    * 
+    * @param newCycle
+    *           the budget cycle to save.
+    * @return true if the budget cycle was saved successfully; false otherwise.
+    * @throws SQLException
+    *            on error.
+    */
    public boolean save(BudgetCycle newCycle) throws SQLException {
 	 boolean result = create(newCycle) == 1;
 	 if (result) {
 	    EntryPersister persister = new EntryPersister();
-	    // Add all monthly entries (from last month) to the new cycle
-	    Collection<Entry> monthlyEntries = persister.getLastCyclesMonthlyEntries();
-	    for (Entry entry : monthlyEntries) {
+	    // Add all recurring entries (from last month) to the new cycle
+	    Collection<Entry> recurringEntries = persister.getLastCyclesRecurringEntries();
+	    for (Entry entry : recurringEntries) {
 		  // Create a new one so it's id is reset
-		  Entry newEntry = new Entry(entry.getCashflowDirection(), entry.getGroup(),
-			   entry.isMonthly(), entry.getAmount());
+		  Entry newEntry = new Entry(entry.getCashflowDirection(), entry.getCategory(),
+			   entry.isRecurring(), entry.getAmount());
 		  persister.save(newEntry);
 	    }
 	 }

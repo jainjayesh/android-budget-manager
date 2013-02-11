@@ -114,7 +114,7 @@ public class BudgetOverview extends BudgetBase {
 		  newHeader = entry.getCashflowDirection().getUIName();
 		  break;
 	    case BY_GROUP:
-		  newHeader = entry.getGroup();
+		  newHeader = entry.getCategory();
 		  break;
 	    default:
 		  // Covers none and by date
@@ -148,7 +148,7 @@ public class BudgetOverview extends BudgetBase {
 	    // Set text for rows
 	    TextView text = (TextView) row.findViewById(R.id.w_table_row_entry_details_text);
 	    text.setText(String.format(getString(R.string.entry_details), entry.getAmount(), entry
-			.getGroup(), DateTimeUtils.format(DateTimeUtils.toCalendar(entry.getDate()),
+			.getCategory(), DateTimeUtils.format(DateTimeUtils.toCalendar(entry.getDate()),
 			DateTimeUtils.DATE_FORMAT)));
 
 	    // Add listener for a context menu

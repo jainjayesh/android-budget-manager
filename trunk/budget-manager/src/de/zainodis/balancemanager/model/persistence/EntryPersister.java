@@ -87,11 +87,11 @@ public class EntryPersister extends Persister<EntryDao> {
 			break;
 		  case RECURRING:
 			where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
-				 where.eq(EntryDao.IS_MONTHLY_FIELD, true));
+				 where.eq(EntryDao.IS_RECURRING_FIELD, true));
 			break;
 		  case NON_RECURRING:
 			where.and(where.eq(EntryDao.FK_BUDGET_CYCLE_ID_FIELD, cycleId),
-				 where.eq(EntryDao.IS_MONTHLY_FIELD, false));
+				 where.eq(EntryDao.IS_RECURRING_FIELD, false));
 			break;
 		  }
 
@@ -100,7 +100,7 @@ public class EntryPersister extends Persister<EntryDao> {
 			builder.orderBy(EntryDao.CASHFLOW_DIRECTION_FIELD, false);
 			break;
 		  case BY_GROUP:
-			builder.orderBy(EntryDao.GROUP_FIELD, false);
+			builder.orderBy(EntryDao.CATEGORY_FIELD, false);
 			break;
 		  default:
 			// Use by date as the default
@@ -126,7 +126,7 @@ public class EntryPersister extends Persister<EntryDao> {
     * the current locale option.
     * 
     * @return the overall budget currently available based on income and
-    *         expenses, monthly as well as unique for the current budget cycle.
+    *         expenses, recurring as well as unique for the current budget cycle.
     */
    public CurrencyAmount getCurrentBudget() {
 	 // TODO optimise using SUM raw query
@@ -170,11 +170,11 @@ public class EntryPersister extends Persister<EntryDao> {
 	 }
    }
 
-   public Collection<Entry> getLastCyclesMonthlyEntries() {
+   public Collection<Entry> getLastCyclesRecurringEntries() {
 	 try {
-	    return getDao().getLastCyclesMonthlyEntries();
+	    return getDao().getLastCyclesRecurringEntries();
 	 } catch (SQLException e) {
-	    LogCat.e(TAG, "getLastCyclesMonthlyEntries failed.", e);
+	    LogCat.e(TAG, "getLastCyclesRecurringEntries failed.", e);
 	 }
 	 return new ArrayList<Entry>();
    }

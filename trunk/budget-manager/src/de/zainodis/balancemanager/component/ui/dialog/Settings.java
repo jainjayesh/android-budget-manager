@@ -8,7 +8,9 @@ import java.util.Locale;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import de.zainodis.commons.LogCat;
 import de.zainodis.commons.component.ui.widget.DatePickerFragment;
 import de.zainodis.commons.utils.DateTimeUtils;
 import de.zainodis.commons.utils.StringUtils;
+import de.zainodis.commons.utils.Toaster;
 
 /**
  * Displayed when the application is started. If the application has not yet
@@ -86,9 +89,14 @@ public class Settings extends BudgetBase {
    }
 
    public void onSelectCurrency(View requestedBy) {
-	 // Start the select currency dialog
-	 startActivityForResult(new Intent(this, SelectCurrency.class),
-		  RequestCodes.SELECT_CURRENCY_REQUEST_CODE);
+	 // Only supported by API level 10 or greater
+	 if (Build.VERSION_CODES.GINGERBREAD_MR1 == Build.VERSION.SDK_INT) {
+	    // Start the select currency dialog
+	    startActivityForResult(new Intent(this, SelectCurrency.class),
+			RequestCodes.SELECT_CURRENCY_REQUEST_CODE);
+	 } else {
+	    Toaster.longToast(getString(R.string.feature_not_supported), this);
+	 }
    }
 
    @Override

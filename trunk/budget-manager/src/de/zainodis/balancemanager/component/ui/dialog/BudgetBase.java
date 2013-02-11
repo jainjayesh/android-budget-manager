@@ -46,19 +46,19 @@ public abstract class BudgetBase extends FragmentActivity {
 
    protected void startEditEntryDialog() {
 	 Intent intent = new Intent(this, EditEntryDialog.class);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, false);
+	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, false);
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, false);
 
 	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);
    }
 
-   protected void startEditEntryDialog(boolean isMonthly, CashflowDirection direction,
+   protected void startEditEntryDialog(boolean isRecurring, CashflowDirection direction,
 	    boolean disableEditing) {
 	 Intent intent = new Intent(this, EditEntryDialog.class);
 	 if (direction != null) {
 	    intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getUIName());
 	 }
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_MONTHLY, isMonthly);
+	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, isRecurring);
 	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, disableEditing);
 
 	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);

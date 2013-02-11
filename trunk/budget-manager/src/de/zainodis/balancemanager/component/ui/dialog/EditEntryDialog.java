@@ -2,7 +2,6 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import java.util.ArrayList;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,13 +19,12 @@ import de.zainodis.balancemanager.model.Group;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.balancemanager.model.persistence.GroupPersister;
 import de.zainodis.commons.component.ui.widget.CurrencyField;
-import de.zainodis.commons.component.ui.widget.SplitCurrencyField;
 import de.zainodis.commons.model.CurrencyAmount;
 
 public class EditEntryDialog extends Activity {
 
    /** Expected as a {@link Boolean} */
-   public static final String INTENT_EXTRA_IS_MONTHLY = "is-monthly";
+   public static final String INTENT_EXTRA_IS_RECURRING = "is-recurring";
    /** Expected as a {@link String} */
    public static final String INTENT_EXTRA_CASHFLOW_DIRECTION = "cashflow-direction";
    /** Expected as a {@link Boolean} */
@@ -61,11 +59,11 @@ public class EditEntryDialog extends Activity {
 	    }
 	 }
 
-	 if (intent.hasExtra(INTENT_EXTRA_IS_MONTHLY)) {
-	    CheckBox isMonthlyBox = (CheckBox) findViewById(R.id.d_edit_entry_is_monthly);
-	    isMonthlyBox.setChecked(intent.getBooleanExtra(INTENT_EXTRA_IS_MONTHLY, false));
+	 if (intent.hasExtra(INTENT_EXTRA_IS_RECURRING)) {
+	    CheckBox isRecurringBox = (CheckBox) findViewById(R.id.d_edit_entry_is_recurring);
+	    isRecurringBox.setChecked(intent.getBooleanExtra(INTENT_EXTRA_IS_RECURRING, false));
 	    if (isEditingDisabled) {
-		  isMonthlyBox.setEnabled(false);
+		  isRecurringBox.setEnabled(false);
 	    }
 	 }
 
@@ -103,8 +101,8 @@ public class EditEntryDialog extends Activity {
 	 CashflowDirection direction = CashflowDirection.fromName(this, String
 		  .valueOf(((Spinner) findViewById(R.id.d_edit_entry_cashflow_direction))
 			   .getSelectedItem()));
-	 boolean isMonthly = ((CheckBox) findViewById(R.id.d_edit_entry_is_monthly)).isChecked();
-	 Entry entry = new Entry(direction, group, isMonthly, amount);
+	 boolean isRecurring = ((CheckBox) findViewById(R.id.d_edit_entry_is_recurring)).isChecked();
+	 Entry entry = new Entry(direction, group, isRecurring, amount);
 	 // Persist the new entry to the database
 	 new EntryPersister().save(entry);
 	 // Persist group
