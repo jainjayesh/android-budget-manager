@@ -126,14 +126,16 @@ public class EntryPersister extends Persister<EntryDao> {
     * the current locale option.
     * 
     * @return the overall budget currently available based on income and
-    *         expenses, recurring as well as unique for the current budget cycle.
+    *         expenses, recurring as well as unique for the current budget
+    *         cycle.
     */
    public CurrencyAmount getCurrentBudget() {
 	 // TODO optimise using SUM raw query
 	 BudgetCycle cycle = new BudgetCyclePersister().getActiveCycle();
 	 if (cycle != null) {
 	    CurrencyAmount result = cycle.createEmptyCurrency();
-	    Collection<Entry> entries = getFilteredEntries(cycle, EntryScope.ALL, EntryFilter.BY_CATEGORY);
+	    Collection<Entry> entries = getFilteredEntries(cycle, EntryScope.ALL,
+			EntryFilter.BY_CATEGORY);
 
 	    for (Entry entry : entries) {
 		  if (CashflowDirection.EXPENSE.equals(entry.getCashflowDirection())) {
@@ -177,6 +179,21 @@ public class EntryPersister extends Persister<EntryDao> {
 	    LogCat.e(TAG, "getLastCyclesRecurringEntries failed.", e);
 	 }
 	 return new ArrayList<Entry>();
+   }
+
+   /**
+    * 
+    * @return the number of entries stored in the database; -1 if an error
+    *         occurred.
+    */
+   public long count() {
+	 try {
+	    return getDao().countOf();
+
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "count failed.", e);
+	    return -1;
+	 }
    }
 
    public void clearTable() {

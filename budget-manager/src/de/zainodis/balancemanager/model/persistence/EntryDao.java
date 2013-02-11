@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.support.ConnectionSource;
@@ -91,5 +92,19 @@ public class EntryDao extends BaseDaoImpl<Entry, Long> {
 	    }
 	 }
 	 return result;
+   }
+
+   /**
+    * Deletes all entries related to the given budget cycle id.
+    * 
+    * @param budgetCycleId
+    *           the id of the budget cycle whose entries should be deleted.
+    * @return the number of deleted entries.
+    */
+   public int deleteEntries(long budgetCycleId) throws SQLException {
+	 DeleteBuilder<Entry, Long> builder = deleteBuilder();
+	 builder.where().eq(FK_BUDGET_CYCLE_ID_FIELD, budgetCycleId);
+
+	 return delete(builder.prepare());
    }
 }
