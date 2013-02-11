@@ -15,7 +15,7 @@
     <string name="add">Hinzufügen</string>
     <string name="delete">Löschen</string>
     <string name="amount">Betrag</string>
-    <string name="group">Gruppe</string>
+    <string name="category">Kategorie</string>
     <string name="entry_details" formatted="false">%s für %s, hinzugefügt am %s</string>
     <string name="is_recurring">Wiederkehrender Betrag</string>
     <string name="cashflow_direction">Haushaltsmittel</string>
@@ -53,7 +53,7 @@
     <string name="feature_not_supported">Dieses Feature wird von ihrer Android Version nicht unterstützt</string>
 
     <string-array name="budget_filters">
-        <item>@string/group</item>
+        <item>@string/category</item>
         <item>@string/date</item>
         <item>@string/cashflow_direction</item>
     </string-array>

@@ -3,7 +3,7 @@ package de.zainodis.balancemanager.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import de.zainodis.balancemanager.model.persistence.GroupDao;
+import de.zainodis.balancemanager.model.persistence.CategoryDao;
 import de.zainodis.commons.utils.StringUtils;
 
 /**
@@ -13,27 +13,27 @@ import de.zainodis.commons.utils.StringUtils;
  * @author zainodis
  * 
  */
-@DatabaseTable(tableName = GroupDao.TABLE_NAME, daoClass = GroupDao.class)
-public class Group {
+@DatabaseTable(tableName = CategoryDao.TABLE_NAME, daoClass = CategoryDao.class)
+public class Category {
 
-   @DatabaseField(columnName = GroupDao.NAME_FIELD, id = true)
+   @DatabaseField(columnName = CategoryDao.NAME_FIELD, id = true)
    private String name;
 
-   /** Fixed groups are never deleted */
-   @DatabaseField(columnName = GroupDao.IS_FIXED_FIELD)
+   /** Fixed categories are never deleted */
+   @DatabaseField(columnName = CategoryDao.IS_FIXED_FIELD)
    private boolean isFixed = false;
 
-   protected Group() {
+   protected Category() {
 	 // for ormlite
    }
 
-   public Group(String groupName, boolean isFixed) {
-	 this.name = groupName;
+   public Category(String categoryName, boolean isFixed) {
+	 this.name = categoryName;
 	 this.isFixed = isFixed;
    }
 
-   public Group(String groupName) {
-	 this.name = groupName;
+   public Category(String categoryName) {
+	 this.name = categoryName;
    }
 
    public String getName() {

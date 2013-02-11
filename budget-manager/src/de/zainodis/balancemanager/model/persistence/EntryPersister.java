@@ -99,7 +99,7 @@ public class EntryPersister extends Persister<EntryDao> {
 		  case BY_CASHFLOW_DIRECTION:
 			builder.orderBy(EntryDao.CASHFLOW_DIRECTION_FIELD, false);
 			break;
-		  case BY_GROUP:
+		  case BY_CATEGORY:
 			builder.orderBy(EntryDao.CATEGORY_FIELD, false);
 			break;
 		  default:
@@ -133,7 +133,7 @@ public class EntryPersister extends Persister<EntryDao> {
 	 BudgetCycle cycle = new BudgetCyclePersister().getActiveCycle();
 	 if (cycle != null) {
 	    CurrencyAmount result = cycle.createEmptyCurrency();
-	    Collection<Entry> entries = getFilteredEntries(cycle, EntryScope.ALL, EntryFilter.BY_GROUP);
+	    Collection<Entry> entries = getFilteredEntries(cycle, EntryScope.ALL, EntryFilter.BY_CATEGORY);
 
 	    for (Entry entry : entries) {
 		  if (CashflowDirection.EXPENSE.equals(entry.getCashflowDirection())) {

@@ -32,8 +32,6 @@ public class SettingDao extends BaseDaoImpl<Setting, String> {
    /**
     * Creates or updates the given {@link Setting}.
     * 
-    * @param groupName
-    *           the group name to save.
     * @return the number of rows that have been modified.
     * @throws SQLException
     *            on error.

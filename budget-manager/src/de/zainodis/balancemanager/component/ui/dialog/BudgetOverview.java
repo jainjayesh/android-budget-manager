@@ -34,7 +34,7 @@ public class BudgetOverview extends BudgetBase {
 
    // Standard settings, may be changed by spinner
    private EntryScope scope = EntryScope.ALL;
-   private EntryFilter filter = EntryFilter.BY_GROUP;
+   private EntryFilter filter = EntryFilter.BY_CATEGORY;
 
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,7 @@ public class BudgetOverview extends BudgetBase {
 	    case BY_CASHFLOW_DIRECTION:
 		  newHeader = entry.getCashflowDirection().getUIName();
 		  break;
-	    case BY_GROUP:
+	    case BY_CATEGORY:
 		  newHeader = entry.getCategory();
 		  break;
 	    default:
@@ -123,7 +123,7 @@ public class BudgetOverview extends BudgetBase {
 		  break;
 	    }
 	    if (!newHeader.equals(currentHeader)) {
-		  // Draw the group header if it's a new group
+		  // Draw the category header if it's a new category
 		  TableRow header = (TableRow) getLayoutInflater().inflate(R.layout.w_table_row_header,
 			   null);
 		  TextView text = (TextView) header.findViewById(R.id.w_table_row_header_text);
