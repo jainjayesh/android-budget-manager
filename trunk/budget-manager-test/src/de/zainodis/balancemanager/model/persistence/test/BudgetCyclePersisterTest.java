@@ -7,6 +7,8 @@ import de.zainodis.balancemanager.core.Application;
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.EntryFilter;
+import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.model.CurrencyAmount;
@@ -37,6 +39,9 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
    }
 
    public void testRoundtrip() throws Exception {
+
+	 EntryPersister entryPersister = new EntryPersister();
+	 entryPersister.clearTable();
 	 persister.clearTable();
 	 // We have no active budget cycle right now
 	 assertTrue(persister.getActiveCyclesId() == 0);
@@ -49,18 +54,32 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
 	 assertTrue(persister.getActiveCyclesId() > 0);
 	 assertEquals(1, persister.count());
 
+	 // Add a few entries
+	 persistSampleEntries();
+
+	 assertEquals(6, entryPersister.getFilteredEntries(EntryScope.ALL, EntryFilter.NONE).size());
+
 	 persister.endOngoingCycles();
 
 	 // We have no active budget cycle anymore
 	 assertTrue(persister.getActiveCyclesId() == 0);
+
+	 // One recurring entry from the last cycle
+	 assertEquals(2, entryPersister.getLastCyclesRecurringEntries().size());
+	 // Start a new budget cycle
+	 persister.save(new BudgetCycle(new Date()));
+	 assertEquals(2, entryPersister.getFilteredEntries(EntryScope.ALL, EntryFilter.NONE).size());
+	 entryPersister.save(new Entry(CashflowDirection.EXPENSE, "Shopping", false,
+		  new CurrencyAmount(15)));
+	 assertEquals(3, entryPersister.getFilteredEntries(EntryScope.ALL, EntryFilter.NONE).size());
+
    }
 
    public void testClearOldBudgetCycles() throws Exception {
 	 EntryPersister entryPersister = new EntryPersister();
 	 entryPersister.clearTable();
 
-	 long entryCount = entryPersister.count();
-	 assertEquals(0, entryCount);
+	 assertEquals(0, entryPersister.count());
 
 	 persister.clearTable();
 	 // We have no active budget cycle right now
@@ -81,8 +100,7 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
 	 persistSampleEntries();
 	 persister.endOngoingCycles();
 	 assertEquals(1, persister.count());
-	 assertTrue(entryPersister.count() > entryCount);
-	 entryCount = entryPersister.count();
+	 assertTrue(entryPersister.count() > 0);
 
 	 // Second budget cycle
 	 cycle = new BudgetCycle(two);
@@ -91,9 +109,12 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
 	 // Add entries and end the cycle
 	 persistSampleEntries();
 	 persister.endOngoingCycles();
-	 assertEquals(2, persister.count());
-	 assertTrue(entryPersister.count() > entryCount);
-	 entryCount = entryPersister.count();
+	 /*
+	  * The first cycle is older than 6 months and has been deleted when the
+	  * second cycle was saved.
+	  */
+	 assertEquals(1, persister.count());
+	 assertTrue(entryPersister.count() > 0);
 
 	 // Third budget cycle (ongoing)
 	 cycle = new BudgetCycle(three);
@@ -101,27 +122,24 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
 
 	 // Add entries and end the cycle
 	 persistSampleEntries();
-	 assertEquals(3, persister.count());
-	 assertTrue(entryPersister.count() > entryCount);
-	 // Entry count before we start deleting
-	 entryCount = entryPersister.count();
+	 /*
+	  * The second cycle is older than 6 months and has been deleted when the
+	  * third cycle was saved.
+	  */
+	 assertEquals(1, persister.count());
+	 assertTrue(entryPersister.count() > 0);
 
 	 // Nothing should be deleted
 	 persister.delete(new Date(110, 1, 11, 14, 26));
-	 assertEquals(3, persister.count());
-	 assertTrue(entryCount == entryPersister.count());
-
-	 // The first entry should be deleted
-	 persister.delete(new Date(111, 3, 2, 19, 50));
-	 assertEquals(2, persister.count());
-	 assertTrue(entryCount > entryPersister.count());
-	 // Update entry count to current value
-	 entryCount = entryPersister.count();
+	 // The third cycle is still in the database (because nothing else has been
+	 // saved yet)
+	 assertEquals(1, persister.count());
+	 assertTrue(entryPersister.count() > 0);
 
 	 // All but the active cycle should be deleted
 	 persister.delete(new Date());
 	 assertEquals(1, persister.count());
-	 assertTrue(entryCount > entryPersister.count());
+	 assertTrue(entryPersister.count() > 0);
 
 	 // Now end the active cycle and delete it
 	 persister.endOngoingCycles();
