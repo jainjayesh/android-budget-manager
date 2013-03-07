@@ -3,10 +3,14 @@ package de.zainodis.balancemanager.component.ui.dialog;
 import java.util.Collection;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -37,13 +41,26 @@ public class BudgetOverview extends BudgetBase {
    private EntryFilter filter = EntryFilter.BY_CATEGORY;
 
    @Override
-   protected void onCreate(Bundle savedInstanceState) {
-	 super.onCreate(savedInstanceState);
-	 setTitle(getString(R.string.budget_overview));
-	 setContentView(R.layout.a_budget_overview);
+   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	 return inflater.inflate(R.layout.a_budget_overview, container, false);
+   }
+
+   @Override
+   public void onActivityCreated(Bundle savedInstanceState) {
+	 super.onActivityCreated(savedInstanceState);
+
+	 Button button = (Button) getSherlockActivity().findViewById(R.id.a_budget_overview_add_entry);
+	 button.setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+		  onAddEntry();
+	    }
+	 });
 
 	 // Add a listener to the scope selector
-	 Spinner spinner = (Spinner) findViewById(R.id.a_budget_overview_spinner_scope);
+	 Spinner spinner = (Spinner) getSherlockActivity().findViewById(
+		  R.id.a_budget_overview_spinner_scope);
 	 spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 	    @Override
@@ -52,7 +69,7 @@ public class BudgetOverview extends BudgetBase {
 		  String selectedValue = selected != null ? selected.toString() : null;
 
 		  // Update scope
-		  scope = EntryScope.fromName(BudgetOverview.this, selectedValue);
+		  scope = EntryScope.fromName(getSherlockActivity(), selectedValue);
 
 		  // Re-load the entries with the current filter/scope settings
 		  updateEntries();
@@ -64,7 +81,7 @@ public class BudgetOverview extends BudgetBase {
 	 });
 
 	 // Add a listener to the filter selector
-	 spinner = (Spinner) findViewById(R.id.a_budget_overview_spinner_filter);
+	 spinner = (Spinner) getSherlockActivity().findViewById(R.id.a_budget_overview_spinner_filter);
 	 spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 	    @Override
@@ -73,7 +90,7 @@ public class BudgetOverview extends BudgetBase {
 		  String selectedValue = selected != null ? selected.toString() : null;
 
 		  // Update scope
-		  filter = EntryFilter.fromName(BudgetOverview.this, selectedValue);
+		  filter = EntryFilter.fromName(getSherlockActivity(), selectedValue);
 
 		  // Re-load the entries with the current filter/scope settings
 		  updateEntries();
@@ -86,7 +103,7 @@ public class BudgetOverview extends BudgetBase {
    }
 
    @Override
-   protected void onResume() {
+   public void onResume() {
 	 super.onResume();
 	 // Update current budget
 	 updateBudgetAmount();
@@ -96,7 +113,8 @@ public class BudgetOverview extends BudgetBase {
 
    protected void updateEntries() {
 	 // Clear stale items
-	 TableLayout table = (TableLayout) findViewById(R.id.a_budget_overview_table);
+	 TableLayout table = (TableLayout) getSherlockActivity().findViewById(
+		  R.id.a_budget_overview_table);
 	 table.removeAllViews();
 	 filter(table);
    }
@@ -124,8 +142,8 @@ public class BudgetOverview extends BudgetBase {
 	    }
 	    if (!newHeader.equals(currentHeader)) {
 		  // Draw the category header if it's a new category
-		  TableRow header = (TableRow) getLayoutInflater().inflate(R.layout.w_table_row_header,
-			   null);
+		  TableRow header = (TableRow) getSherlockActivity().getLayoutInflater().inflate(
+			   R.layout.w_table_row_header, null);
 		  TextView text = (TextView) header.findViewById(R.id.w_table_row_header_text);
 		  text.setText(newHeader);
 		  table.addView(header);
@@ -133,8 +151,8 @@ public class BudgetOverview extends BudgetBase {
 	    }
 
 	    // Add the entry as a new row
-	    TableRow row = (TableRow) getLayoutInflater().inflate(R.layout.w_table_row_entry_details,
-			null);
+	    TableRow row = (TableRow) getSherlockActivity().getLayoutInflater().inflate(
+			R.layout.w_table_row_entry_details, null);
 
 	    // Set icon cashflows direction
 	    ImageView image = (ImageView) row
@@ -157,9 +175,10 @@ public class BudgetOverview extends BudgetBase {
 		  @Override
 		  public boolean onLongClick(View v) {
 			// Pretty inventive (not to say "nasty"), huh :P ?
-			setIntent(getIntent().putExtra(EntryDao.ID_FIELD, entry.getId()));
+			getSherlockActivity().setIntent(
+				 getSherlockActivity().getIntent().putExtra(EntryDao.ID_FIELD, entry.getId()));
 			registerForContextMenu(v);
-			openContextMenu(v);
+			getSherlockActivity().openContextMenu(v);
 			unregisterForContextMenu(v);
 			// Display a context menu for the current entry
 			return true;

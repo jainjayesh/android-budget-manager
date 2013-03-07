@@ -1,33 +1,39 @@
 package de.zainodis.balancemanager.component.ui.dialog;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragment;
+
 import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.LogCat;
 
-public abstract class BudgetBase extends FragmentActivity {
+public abstract class BudgetBase extends SherlockFragment {
 
    public static final String TAG = "BudgetBase";
 
    @Override
    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 	 super.onCreateContextMenu(menu, v, menuInfo);
-	 MenuInflater inflater = getMenuInflater();
+	 MenuInflater inflater = getSherlockActivity().getMenuInflater();
 	 inflater.inflate(R.menu.m_edit_entry, menu);
    }
 
    @Override
    public boolean onContextItemSelected(MenuItem item) {
-	 Intent intent = getIntent();
+	 Intent intent = getSherlockActivity().getIntent();
 	 // Get id of the item that the user clicked on
 	 long id = intent.getLongExtra(EntryDao.ID_FIELD, 0);
 	 switch (item.getItemId()) {
@@ -45,16 +51,22 @@ public abstract class BudgetBase extends FragmentActivity {
    }
 
    protected void startEditEntryDialog() {
-	 Intent intent = new Intent(this, EditEntryDialog.class);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, false);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, false);
+	 String fragmentName = EditEntryDialog.class.getName();
+	 Bundle bundle = new Bundle();
+	 bundle.putBoolean(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, false);
+	 bundle.putBoolean(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, false);
 
-	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);
+	 Fragment fragment = SherlockFragment.instantiate(getSherlockActivity(), fragmentName, bundle);
+
+	 FragmentTransaction transaction = getFragmentManager().beginTransaction();
+	 transaction.replace(android.R.id.content, fragment, BudgetBase.TAG);
+	 transaction.addToBackStack(null);
+	 transaction.commit();
    }
 
    protected void startEditEntryDialog(boolean isRecurring, CashflowDirection direction,
 	    boolean disableEditing) {
-	 Intent intent = new Intent(this, EditEntryDialog.class);
+	 Intent intent = new Intent(getSherlockActivity(), EditEntryDialog.class);
 	 if (direction != null) {
 	    intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getUIName());
 	 }
@@ -64,17 +76,17 @@ public abstract class BudgetBase extends FragmentActivity {
 	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);
    }
 
-   public void onAddEntry(View requestedBy) {
+   public void onAddEntry() {
 	 startEditEntryDialog();
    }
 
    @Override
-   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+   public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	 super.onActivityResult(requestCode, resultCode, data);
 	 switch (requestCode) {
 	 case RequestCodes.REQUEST_CODE_EDIT_ENTRY:
 	    switch (resultCode) {
-	    case RESULT_OK:
+	    case SherlockActivity.RESULT_OK:
 		  LogCat.i(TAG, "New entry has been created, updating ui...");
 		  // The user has modified the budget
 		  updateBudgetAmount();
@@ -86,7 +98,8 @@ public abstract class BudgetBase extends FragmentActivity {
    }
 
    protected void updateBudgetAmount() {
-	 TextView budgetAvailable = (TextView) findViewById(R.id.w_available_budget_amount);
+	 TextView budgetAvailable = (TextView) getSherlockActivity().findViewById(
+		  R.id.w_available_budget_amount);
 	 budgetAvailable.setText(new EntryPersister().getCurrentBudget().format());
    }
 

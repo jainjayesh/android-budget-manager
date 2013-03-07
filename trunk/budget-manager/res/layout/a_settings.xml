@@ -24,10 +24,10 @@
             android:textSize="18sp" />
 
         <Button
+            android:id="@+id/a_settings_start_cycle"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:onClick="onStartNewCycle"
             android:text="@string/start_new_cycle"
             android:textSize="18sp" />
 
