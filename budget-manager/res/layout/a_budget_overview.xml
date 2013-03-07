@@ -39,10 +39,10 @@
         <include layout="@layout/w_divider" />
 
         <Button
+            android:id="@+id/a_budget_overview_add_entry"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:onClick="onAddEntry"
             android:text="@string/add_entry"
             android:textSize="18sp" />
 

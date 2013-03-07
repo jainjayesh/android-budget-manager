@@ -65,18 +65,15 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:weightSum="2" >
+            android:orientation="vertical" >
 
             <include
                 android:id="@+id/d_edit_entry_save"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_marginBottom="2dp"
                 layout="@layout/w_save" />
 
             <include
                 android:id="@+id/d_edit_entry_cancel"
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 layout="@layout/w_cancel" >
             </include>
         </LinearLayout>
