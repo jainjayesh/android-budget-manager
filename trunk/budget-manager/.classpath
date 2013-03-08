@@ -15,5 +15,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="/zainodis-commons"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/action-bar-sherlock-4.2.0"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

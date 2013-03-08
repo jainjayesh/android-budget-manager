@@ -15,6 +15,11 @@ public class TabHostActivity extends SherlockFragmentActivity {
 
    private static final String TAG = "TabHostActivity";
 
+   private static final String SELETED_TAB_INDEX = "tabIndex";
+
+   public static final String SETTINGS_TAG = Settings.TAG;
+   public static final String BUDGET_OVERVIEW_TAG = BudgetOverview.TAG;
+
    @Override
    protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -26,18 +31,30 @@ public class TabHostActivity extends SherlockFragmentActivity {
 	 actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 	 // Add the products tab
-	 Tab tab = actionBar
+	 Tab budgetTab = actionBar
 		  .newTab()
 		  .setText(getString(R.string.budget_overview))
 		  .setTabListener(
-			   new MyTabsListener<BudgetOverview>(this, BudgetOverview.TAG, BudgetOverview.class));
-	 actionBar.addTab(tab);
+			   new MyTabsListener<BudgetOverview>(this, BUDGET_OVERVIEW_TAG,
+				    BudgetOverview.class));
+	 actionBar.addTab(budgetTab);
 
 	 // Add the about tab
-	 tab = actionBar.newTab().setText(getString(R.string.settings))
-		  .setTabListener(new MyTabsListener<Settings>(this, Settings.TAG, Settings.class));
-	 actionBar.addTab(tab);
+	 Tab settingsTab = actionBar.newTab().setText(getString(R.string.settings))
+		  .setTabListener(new MyTabsListener<Settings>(this, SETTINGS_TAG, Settings.class));
+	 actionBar.addTab(settingsTab);
 
+	 if (savedInstanceState != null) {
+	    int index = savedInstanceState.getInt(SELETED_TAB_INDEX);
+	    actionBar.setSelectedNavigationItem(index);
+	 }
+
+   }
+
+   @Override
+   protected void onSaveInstanceState(Bundle outState) {
+	 super.onSaveInstanceState(outState);
+	 outState.putInt(SELETED_TAB_INDEX, getSupportActionBar().getSelectedTab().getPosition());
    }
 
    private class MyTabsListener<T extends Fragment> implements ActionBar.TabListener {

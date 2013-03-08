@@ -38,6 +38,12 @@ public class EditEntryDialog extends SherlockFragment {
    public static final String INTENT_EXTRA_DISABLE_EDITING = "disable-editing";
 
    @Override
+   public void onCreate(Bundle savedInstanceState) {
+	 super.onCreate(savedInstanceState);
+	 setRetainInstance(true);
+   }
+
+   @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	 return inflater.inflate(R.layout.a_edit_entry, container, false);
    }
@@ -128,8 +134,7 @@ public class EditEntryDialog extends SherlockFragment {
 	 new CategoryPersister().save(new Category(category));
 
 	 // Wrap this up, we're done
-	 getSherlockActivity().setResult(SherlockActivity.RESULT_OK);
-	 getSherlockActivity().finish();
+	 getSherlockActivity().onBackPressed();
    }
 
    private void onCancel() {

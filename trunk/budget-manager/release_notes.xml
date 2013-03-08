@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<release-notes version="1.0.4">
+<release-notes version="1.0.5">
+
+	<release version="1.0.5">
+		<item text="Tabs Navigation wurde durch ActionBar ersetzt."/>		
+		<item text="Die Budgetgruppe beinhaltet nun auch die Gesamtsumme."/>		
+	</release>
 
 	<release version="1.0.4">
 		<item text="Beim Anlegen neuer Gruppen werden nun Leerzeichen am Anfang und Ende des Wortes entfernt."/>		
