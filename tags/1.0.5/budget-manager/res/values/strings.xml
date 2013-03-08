@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Balance Manager</string>
+    <string name="settings">Settings</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="budget_overview">Budget overview</string>
+    <string name="please_wait">Please wait</string>
+    <string name="launching_application">Launching application</string>
+    <string name="beginning_of_budget_cycle">Beginning of the budget cycle</string>
+    <string name="end_of_budget_cycle">End of the budget cycle</string>
+    <string name="recurring_income">Recurring income</string>
+    <string name="recurring_expenses">Recurring expenses</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="amount">Amount</string>
+    <string name="category">Category</string>
+    <string name="entry_details" formatted="false">%s for %s, added on %s</string>
+    <string name="is_recurring">Recurring amount</string>
+    <string name="cashflow_direction">Budget resources</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="edit_entry">Edit Budget resources</string>
+    <string name="medicine">Medicine</string>
+    <string name="clothes">Clothes</string>
+    <string name="groceries">Groceries</string>
+    <string name="accessories">Accessories/Gadgets</string>
+    <string name="travel">Travel</string>
+    <string name="pets">Pets/Accessories</string>
+    <string name="books">Books</string>
+    <string name="presents">Presents</string>
+    <string name="rent">Rent</string>
+    <string name="date">Date</string>
+    <string name="insurance">Insurance</string>
+    <string name="salary">Salary</string>
+    <string name="available_budget">Available budget</string>
+    <string name="reset_settings">Reset Settings</string>
+    <string name="settings">Settings</string>
+    <string name="add_entry">Add Entry</string>
+    <string name="edit">Edit</string>
+    <string name="start_new_cycle">Start new Budget Cycle</string>
+    <string name="no_active_cycle_available">Currently there is no active budget cycle available. You may start a new cycle manually or simply by adding a new entry.</string>
+    <string name="recurring_entries">Recurring entries</string>
+    <string name="non_recurrent_entries">Non recurring entries</string>
+    <string name="all">All</string>
+    <string name="no_sorting">No sorting</string>
+    <string name="show_following_entries">Filter displayed entries by :</string>
+    <string name="sort_by">Sort by :</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="warning">Warning</string>
+    <string name="changing_the_currency_will_create_a_new_cycle">If you proceed with changing the currency, a new budget cycle will automatically be started. Recurring entries won\'t be carried over to the new cycle due to different crrencies.</string>
+    <string name="proceed">proceed</string>
+    <string name="feature_not_supported">This feature is not available for your android version</string>
+
+    <string-array name="budget_filters">
+        <item>@string/category</item>
+        <item>@string/date</item>
+        <item>@string/cashflow_direction</item>
+    </string-array>
+    <string-array name="budget_scopes">
+        <item>@string/all</item>
+        <item>@string/recurring_entries</item>
+        <item>@string/non_recurrent_entries</item>
+    </string-array>
+    <string-array name="casfhlow_direction_suggestions">
+        <item>@string/expenses</item>
+        <item>@string/income</item>
+    </string-array>
+
+</resources>
