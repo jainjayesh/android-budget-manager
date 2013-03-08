@@ -11,18 +11,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.zainodis.balancemanager.R;
-import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
-import de.zainodis.commons.LogCat;
 
 public abstract class BudgetBase extends SherlockFragment {
 
    public static final String TAG = "BudgetBase";
+
+   @Override
+   public void onCreate(Bundle savedInstanceState) {
+	 super.onCreate(savedInstanceState);
+	 setRetainInstance(true);
+   }
 
    @Override
    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -59,42 +62,13 @@ public abstract class BudgetBase extends SherlockFragment {
 	 Fragment fragment = SherlockFragment.instantiate(getSherlockActivity(), fragmentName, bundle);
 
 	 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-	 transaction.replace(android.R.id.content, fragment, BudgetBase.TAG);
+	 transaction.replace(android.R.id.content, fragment, TabHostActivity.BUDGET_OVERVIEW_TAG);
 	 transaction.addToBackStack(null);
 	 transaction.commit();
    }
 
-   protected void startEditEntryDialog(boolean isRecurring, CashflowDirection direction,
-	    boolean disableEditing) {
-	 Intent intent = new Intent(getSherlockActivity(), EditEntryDialog.class);
-	 if (direction != null) {
-	    intent.putExtra(EditEntryDialog.INTENT_EXTRA_CASHFLOW_DIRECTION, direction.getUIName());
-	 }
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, isRecurring);
-	 intent.putExtra(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, disableEditing);
-
-	 startActivityForResult(intent, RequestCodes.REQUEST_CODE_EDIT_ENTRY);
-   }
-
    public void onAddEntry() {
 	 startEditEntryDialog();
-   }
-
-   @Override
-   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-	 super.onActivityResult(requestCode, resultCode, data);
-	 switch (requestCode) {
-	 case RequestCodes.REQUEST_CODE_EDIT_ENTRY:
-	    switch (resultCode) {
-	    case SherlockActivity.RESULT_OK:
-		  LogCat.i(TAG, "New entry has been created, updating ui...");
-		  // The user has modified the budget
-		  updateBudgetAmount();
-		  updateEntries();
-		  break;
-	    }
-	    break;
-	 }
    }
 
    protected void updateBudgetAmount() {

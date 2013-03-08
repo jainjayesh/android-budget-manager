@@ -23,6 +23,7 @@ import de.zainodis.balancemanager.model.EntryFilter;
 import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
+import de.zainodis.commons.model.CurrencyAmount;
 import de.zainodis.commons.utils.DateTimeUtils;
 import de.zainodis.commons.utils.StringUtils;
 
@@ -124,6 +125,9 @@ public class BudgetOverview extends BudgetBase {
 	 Collection<Entry> result = new EntryPersister().getFilteredEntries(scope, filter);
 
 	 String currentHeader = StringUtils.EMPTY;
+	 CurrencyAmount currentHeaderAmount = new CurrencyAmount(0);
+	 TextView headerText = null;
+
 	 for (final Entry entry : result) {
 	    String newHeader = StringUtils.EMPTY;
 
@@ -144,10 +148,21 @@ public class BudgetOverview extends BudgetBase {
 		  // Draw the category header if it's a new category
 		  TableRow header = (TableRow) getSherlockActivity().getLayoutInflater().inflate(
 			   R.layout.w_table_row_header, null);
-		  TextView text = (TextView) header.findViewById(R.id.w_table_row_header_text);
-		  text.setText(newHeader);
+		  headerText = (TextView) header.findViewById(R.id.w_table_row_header_text);
+		  headerText.setText(newHeader);
 		  table.addView(header);
 		  currentHeader = newHeader;
+		  currentHeaderAmount = new CurrencyAmount(0);
+	    }
+
+	    if (headerText != null) {
+		  if (entry.getCashflowDirection().equals(CashflowDirection.EXPENSE)) {
+			currentHeaderAmount.substract(entry.getAmount());
+		  } else {
+			currentHeaderAmount.add(entry.getAmount());
+		  }
+		  // Update header each time
+		  headerText.setText(String.format("%s %s", currentHeader, currentHeaderAmount.format()));
 	    }
 
 	    // Add the entry as a new row

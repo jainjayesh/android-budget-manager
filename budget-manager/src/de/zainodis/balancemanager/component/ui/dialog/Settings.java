@@ -46,6 +46,12 @@ public class Settings extends BudgetBase {
    public static final String TAG = "Settings";
 
    @Override
+   public void onCreate(Bundle savedInstanceState) {
+	 super.onCreate(savedInstanceState);
+	 setRetainInstance(true);
+   }
+
+   @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 	 return inflater.inflate(R.layout.a_settings, container, false);
    }
