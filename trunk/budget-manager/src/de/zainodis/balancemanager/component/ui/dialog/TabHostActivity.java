@@ -13,8 +13,6 @@ import de.zainodis.balancemanager.R;
 
 public class TabHostActivity extends SherlockFragmentActivity {
 
-   private static final String TAG = "TabHostActivity";
-
    private static final String SELETED_TAB_INDEX = "tabIndex";
 
    public static final String SETTINGS_TAG = Settings.TAG;

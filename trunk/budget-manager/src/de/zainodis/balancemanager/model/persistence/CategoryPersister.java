@@ -24,7 +24,7 @@ public class CategoryPersister extends Persister<CategoryDao> {
    }
 
    /**
-    * Saves the given {@link Entry}.
+    * Saves the given {@link Category}.
     * 
     * @param newcategory
     *           the new category to save.
@@ -37,6 +37,28 @@ public class CategoryPersister extends Persister<CategoryDao> {
 	 } catch (SQLException e) {
 	    LogCat.e(TAG, "save failed.", e);
 	    return false;
+	 }
+   }
+
+   /**
+    * Deletes the {@link Category} with the given name.
+    * 
+    * @param name
+    *           name of the category that should be deleted.
+    */
+   public void delete(String newCategory) {
+	 if (newCategory == null) {
+	    return;
+	 }
+
+	 try {
+	    CategoryDao dao = getDao();
+	    DeleteBuilder<Category, String> builder = dao.deleteBuilder();
+	    builder.where().eq(CategoryDao.NAME_FIELD, newCategory);
+	    dao.delete(builder.prepare());
+
+	 } catch (SQLException e) {
+	    LogCat.e(TAG, "delete failed.", e);
 	 }
    }
 

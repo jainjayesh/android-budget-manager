@@ -52,7 +52,8 @@
     <string name="changing_the_currency_will_create_a_new_cycle">If you proceed with changing the currency, a new budget cycle will automatically be started. Recurring entries won\'t be carried over to the new cycle due to different crrencies.</string>
     <string name="proceed">proceed</string>
     <string name="feature_not_supported">This feature is not available for your android version</string>
-
+    <string name="edit_categories">Edit Categories</string>
+    
     <string-array name="budget_filters">
         <item>@string/category</item>
         <item>@string/date</item>
