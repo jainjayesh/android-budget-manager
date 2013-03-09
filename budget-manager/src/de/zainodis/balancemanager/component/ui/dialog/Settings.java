@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragment;
 
 import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.model.BudgetCycle;
@@ -65,7 +68,23 @@ public class Settings extends BudgetBase {
 
 	    @Override
 	    public void onClick(View v) {
-		  onStartNewCycle();
+		  DatePickerFragment picker = new DatePickerFragment(onBudgetBeginningSelected);
+		  picker.show(getSherlockActivity().getSupportFragmentManager(), TAG);
+	    }
+	 });
+
+	 button = (Button) getSherlockActivity().findViewById(R.id.a_settings_edit_categories);
+	 button.setOnClickListener(new OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+		  String fragmentName = EditCategories.class.getName();
+		  Fragment fragment = SherlockFragment.instantiate(getSherlockActivity(), fragmentName);
+
+		  FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		  transaction.replace(android.R.id.content, fragment, TabHostActivity.SETTINGS_TAG);
+		  transaction.addToBackStack(null);
+		  transaction.commit();
 	    }
 	 });
    }
@@ -105,11 +124,6 @@ public class Settings extends BudgetBase {
 	    loadBudgetCycle(newCycle);
 	 }
    };
-
-   public void onStartNewCycle() {
-	 DatePickerFragment picker = new DatePickerFragment(onBudgetBeginningSelected);
-	 picker.show(getSherlockActivity().getSupportFragmentManager(), TAG);
-   }
 
    // TODO currently inactive
    public void onSelectCurrency(View requestedBy) {

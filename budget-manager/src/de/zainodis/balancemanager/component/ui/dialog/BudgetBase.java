@@ -53,7 +53,7 @@ public abstract class BudgetBase extends SherlockFragment {
 	 }
    }
 
-   protected void startEditEntryDialog() {
+   protected void onOpenEditCategories() {
 	 String fragmentName = EditEntryDialog.class.getName();
 	 Bundle bundle = new Bundle();
 	 bundle.putBoolean(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, false);
@@ -68,7 +68,7 @@ public abstract class BudgetBase extends SherlockFragment {
    }
 
    public void onAddEntry() {
-	 startEditEntryDialog();
+	 onOpenEditCategories();
    }
 
    protected void updateBudgetAmount() {
