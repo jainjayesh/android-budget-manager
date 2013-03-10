@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<release-notes version="1.0.5">
+<release-notes version="1.0.6">
+
+	<release version="1.0.6">
+		<item text="Unter Einstellungen gibt es nun die Optione Kategorien Bearbeiten, welche vorhandene Kategorien anzeigt. Diese kann man löschen oder neue Kategorien hinzufügen."/>			
+	</release>
 
 	<release version="1.0.5">
 		<item text="Tabs Navigation wurde durch ActionBar ersetzt."/>		
