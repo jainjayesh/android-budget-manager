@@ -2,6 +2,10 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import java.util.Collection;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,6 +114,21 @@ public class BudgetOverview extends BudgetBase {
 	 updateBudgetAmount();
 	 // Load Budget items, based on current main filter
 	 updateEntries();
+   }
+
+   @Override
+   public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	 inflater.inflate(R.menu.m_budget_overview, menu);
+   }
+
+   @Override
+   public boolean onOptionsItemSelected(MenuItem item) {
+	 int itemId = item.getItemId();
+	 if (itemId == R.id.menu_settings) {
+	    // Open the settings menu
+	    return true;
+	 }
+	 return super.onOptionsItemSelected(item);
    }
 
    protected void updateEntries() {

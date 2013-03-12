@@ -139,6 +139,6 @@ public class EditEntryDialog extends SherlockFragment {
 
    private void onCancel() {
 	 getSherlockActivity().setResult(SherlockActivity.RESULT_CANCELED);
-	 getSherlockActivity().finish();
+	 getSherlockActivity().onBackPressed();
    }
 }
