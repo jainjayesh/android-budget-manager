@@ -46,7 +46,8 @@
     <string name="all">All</string>
     <string name="no_sorting">No sorting</string>
     <string name="show_following_entries">Filter displayed entries by :</string>
-    <string name="sort_by">Sort by :</string>
+    <string name="sort_by">Sort by</string>
+    <string name="filter_by">Filter by</string>
     <string name="select_currency">Select Currency</string>
     <string name="warning">Warning</string>
     <string name="changing_the_currency_will_create_a_new_cycle">If you proceed with changing the currency, a new budget cycle will automatically be started. Recurring entries won\'t be carried over to the new cycle due to different crrencies.</string>
@@ -54,13 +55,14 @@
     <string name="feature_not_supported">This feature is not available for your android version</string>
     <string name="edit_categories">Edit Categories</string>
     <string name="new_category">New Category...</string>
-
-    <string-array name="budget_filters">
+    <string name="started_x">Started on %s</string>
+    
+    <string-array name="budget_sort">
         <item>@string/category</item>
         <item>@string/date</item>
         <item>@string/cashflow_direction</item>
     </string-array>
-    <string-array name="budget_scopes">
+    <string-array name="budget_filters">
         <item>@string/all</item>
         <item>@string/recurring_entries</item>
         <item>@string/non_recurrent_entries</item>

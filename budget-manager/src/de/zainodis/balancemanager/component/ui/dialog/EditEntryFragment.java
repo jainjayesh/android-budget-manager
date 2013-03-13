@@ -26,9 +26,9 @@ import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.component.ui.widget.CurrencyField;
 import de.zainodis.commons.model.CurrencyAmount;
 
-public class EditEntryDialog extends SherlockFragment {
+public class EditEntryFragment extends SherlockFragment {
 
-   public static final String TAG = "EditEntryDialog";
+   public static final String TAG = EditEntryFragment.class.getName();
 
    /** Expected as a {@link Boolean} */
    public static final String INTENT_EXTRA_IS_RECURRING = "is-recurring";

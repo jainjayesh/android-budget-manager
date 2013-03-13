@@ -2,7 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_settings"
+        android:id="@+id/m_budget_overview_setSortBy"
+        android:showAsAction="always"
+        android:title="@string/sort_by"/>
+    <item
+        android:id="@+id/m_budget_overview_addEntry"
+        android:showAsAction="always"
+        android:title="@string/add_entry"/>
+    <item
+        android:id="@+id/m_budget_overview_settings"
+        android:showAsAction="never"
         android:title="@string/settings"/>
+    <item
+        android:id="@+id/m_budget_overview_new_cycle"
+        android:showAsAction="never"
+        android:title="@string/start_new_cycle"/>
 
 </menu>

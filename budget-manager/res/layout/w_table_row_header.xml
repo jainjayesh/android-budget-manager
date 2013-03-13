@@ -2,7 +2,7 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/light_blue" >
+    android:background="@color/holo_medium_grey" >
 
     <TextView
         android:id="@+id/w_table_row_header_text"

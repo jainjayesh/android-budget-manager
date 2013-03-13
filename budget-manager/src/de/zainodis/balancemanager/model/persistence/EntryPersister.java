@@ -14,8 +14,8 @@ import de.zainodis.balancemanager.core.Application;
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.EntrySort;
 import de.zainodis.balancemanager.model.EntryFilter;
-import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.persistence.Persister;
 import de.zainodis.commons.LogCat;
 import de.zainodis.commons.model.CurrencyAmount;
@@ -71,8 +71,8 @@ public class EntryPersister extends Persister<EntryDao> {
 	 }
    }
 
-   public Collection<Entry> getFilteredEntries(BudgetCycle cycle, EntryScope scope,
-	    EntryFilter filter) {
+   public Collection<Entry> getFilteredEntries(BudgetCycle cycle, EntryFilter scope,
+	    EntrySort filter) {
 	 if (cycle != null) {
 	    try {
 		  EntryDao dao = getDao();
@@ -117,7 +117,7 @@ public class EntryPersister extends Persister<EntryDao> {
 	 return new ArrayList<Entry>();
    }
 
-   public Collection<Entry> getFilteredEntries(EntryScope scope, EntryFilter filter) {
+   public Collection<Entry> getFilteredEntries(EntryFilter scope, EntrySort filter) {
 	 return getFilteredEntries(new BudgetCyclePersister().getActiveCycle(), scope, filter);
    }
 
@@ -134,8 +134,8 @@ public class EntryPersister extends Persister<EntryDao> {
 	 BudgetCycle cycle = new BudgetCyclePersister().getActiveCycle();
 	 if (cycle != null) {
 	    CurrencyAmount result = cycle.createEmptyCurrency();
-	    Collection<Entry> entries = getFilteredEntries(cycle, EntryScope.ALL,
-			EntryFilter.BY_CATEGORY);
+	    Collection<Entry> entries = getFilteredEntries(cycle, EntryFilter.ALL,
+			EntrySort.BY_CATEGORY);
 
 	    for (Entry entry : entries) {
 		  if (CashflowDirection.EXPENSE.equals(entry.getCashflowDirection())) {

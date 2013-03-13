@@ -46,20 +46,22 @@
     <string name="all">Alle</string>
     <string name="no_sorting">Keine Sortierung</string>
     <string name="show_following_entries">Zeige folgende Positionen an :</string>
-    <string name="sort_by">Sortiere nach :</string>
+    <string name="sort_by">Sortiere nach</string>
+    <string name="filter_by">Filter nach</string>
     <string name="select_currency">Anzeigewährung auswählen</string>
     <string name="changing_the_currency_will_create_a_new_cycle">Wenn sie eine andere Währung wählen, wird ein neuer Budget Zyklus begonnen und alle wiederkehrenden Positionen werden nicht in den neuen Zyklus übernommen.</string>
     <string name="proceed">Fortfahren</string>
     <string name="feature_not_supported">Dieses Feature wird von ihrer Android Version nicht unterstützt</string>
     <string name="edit_categories">Kategorien Bearbeiten</string>
     <string name="new_category">Neue Kategorie...</string>
+    <string name="started_x">Begann am %s</string>
     
-    <string-array name="budget_filters">
+    <string-array name="budget_sort">
         <item>@string/category</item>
         <item>@string/date</item>
         <item>@string/cashflow_direction</item>
     </string-array>
-    <string-array name="budget_scopes">
+    <string-array name="budget_filters">
         <item>@string/all</item>
         <item>@string/recurring_entries</item>
         <item>@string/non_recurrent_entries</item>
