@@ -8,6 +8,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import de.zainodis.balancemanager.R;
 import de.zainodis.balancemanager.component.LocaleComponent;
 import de.zainodis.balancemanager.core.Application;
 import de.zainodis.balancemanager.model.options.LocaleOption;
@@ -57,6 +58,15 @@ public class BudgetCycle {
 	 Locale cyclesLocale = Application.getInstance().getComponent(LocaleComponent.class)
 		  .getLocale();
 	 this.locale = new LocaleOption(cyclesLocale).format();
+   }
+
+   /**
+    * @return the starting date formatted using
+    *         {@link DateTimeUtils#DATE_FORMAT}.
+    */
+   public String getStartAsString() {
+	 return start != null ? DateTimeUtils.format(DateTimeUtils.toCalendar(start),
+		  DateTimeUtils.DATE_FORMAT) : Application.getInstance().getString(R.string.unknown);
    }
 
    public Date getStart() {

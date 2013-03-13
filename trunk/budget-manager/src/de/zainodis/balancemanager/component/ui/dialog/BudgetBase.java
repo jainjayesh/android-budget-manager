@@ -2,8 +2,6 @@ package de.zainodis.balancemanager.component.ui.dialog;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -14,6 +12,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.zainodis.balancemanager.R;
+import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 
@@ -53,28 +52,22 @@ public abstract class BudgetBase extends SherlockFragment {
 	 }
    }
 
-   protected void onOpenEditCategories() {
-	 String fragmentName = EditEntryDialog.class.getName();
-	 Bundle bundle = new Bundle();
-	 bundle.putBoolean(EditEntryDialog.INTENT_EXTRA_IS_RECURRING, false);
-	 bundle.putBoolean(EditEntryDialog.INTENT_EXTRA_DISABLE_EDITING, false);
-
-	 Fragment fragment = SherlockFragment.instantiate(getSherlockActivity(), fragmentName, bundle);
-
-	 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-	 transaction.replace(android.R.id.content, fragment, TabHostActivity.BUDGET_OVERVIEW_TAG);
-	 transaction.addToBackStack(null);
-	 transaction.commit();
-   }
-
-   public void onAddEntry() {
-	 onOpenEditCategories();
-   }
-
    protected void updateBudgetAmount() {
 	 TextView budgetAvailable = (TextView) getSherlockActivity().findViewById(
 		  R.id.w_available_budget_amount);
-	 budgetAvailable.setText(new EntryPersister().getCurrentBudget().format());
+	 // Determine the amount
+	 String amount = new EntryPersister().getCurrentBudget().format();
+	 String text = null;
+
+	 // Determine if a budget is available, if yes, retrieve it's start date
+	 if (new BudgetCyclePersister().hasOngoingCycle()) {
+	    text = String.format(getString(R.string.started_x), new BudgetCyclePersister()
+			.getActiveCycle().getStartAsString());
+	 } else {
+	    text = getString(R.string.no_active_cycle_available);
+
+	 }
+	 budgetAvailable.setText(String.format("%s (%s)", amount, text));
    }
 
    protected abstract void updateEntries();

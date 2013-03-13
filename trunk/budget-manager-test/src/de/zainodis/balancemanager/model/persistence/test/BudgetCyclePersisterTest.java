@@ -7,8 +7,8 @@ import de.zainodis.balancemanager.core.Application;
 import de.zainodis.balancemanager.model.BudgetCycle;
 import de.zainodis.balancemanager.model.CashflowDirection;
 import de.zainodis.balancemanager.model.Entry;
+import de.zainodis.balancemanager.model.EntrySort;
 import de.zainodis.balancemanager.model.EntryFilter;
-import de.zainodis.balancemanager.model.EntryScope;
 import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 import de.zainodis.commons.model.CurrencyAmount;
@@ -57,7 +57,7 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
 	 // Add a few entries
 	 persistSampleEntries();
 
-	 assertEquals(6, entryPersister.getFilteredEntries(EntryScope.ALL, EntryFilter.NONE).size());
+	 assertEquals(6, entryPersister.getFilteredEntries(EntryFilter.ALL, EntrySort.NONE).size());
 
 	 persister.endOngoingCycles();
 
@@ -68,10 +68,10 @@ public class BudgetCyclePersisterTest extends ApplicationTestCase<Application> {
 	 assertEquals(2, entryPersister.getLastCyclesRecurringEntries().size());
 	 // Start a new budget cycle
 	 persister.save(new BudgetCycle(new Date()));
-	 assertEquals(2, entryPersister.getFilteredEntries(EntryScope.ALL, EntryFilter.NONE).size());
+	 assertEquals(2, entryPersister.getFilteredEntries(EntryFilter.ALL, EntrySort.NONE).size());
 	 entryPersister.save(new Entry(CashflowDirection.EXPENSE, "Shopping", false,
 		  new CurrencyAmount(15)));
-	 assertEquals(3, entryPersister.getFilteredEntries(EntryScope.ALL, EntryFilter.NONE).size());
+	 assertEquals(3, entryPersister.getFilteredEntries(EntryFilter.ALL, EntrySort.NONE).size());
 
    }
 

@@ -26,7 +26,7 @@ import de.zainodis.commons.utils.StringUtils;
  */
 public class EditCategories extends SherlockListFragment {
 
-   public static final String TAG = "EditCategories";
+   public static final String TAG = EditCategories.class.getName();
 
    private CategoryAdapter listAdapter;
 
