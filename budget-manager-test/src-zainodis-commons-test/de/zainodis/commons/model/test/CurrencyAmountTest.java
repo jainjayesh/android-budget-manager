@@ -37,20 +37,6 @@ public class CurrencyAmountTest extends TestCase {
 	    // Expected
 	 }
 
-	 try {
-	    amount = new CurrencyAmount("5b56");
-	    fail("Invalid currency value.");
-	 } catch (IllegalArgumentException e) {
-	    // Expected
-	 }
-
-	 try {
-	    amount = new CurrencyAmount("7*90");
-	    fail("Invalid currency value.");
-	 } catch (IllegalArgumentException e) {
-	    // Expected
-	 }
-
 	 // For German locale
 	 locale = Locale.GERMANY;
 
@@ -62,6 +48,26 @@ public class CurrencyAmountTest extends TestCase {
 
 	 amount = new CurrencyAmount("123,456", locale);
 	 assertEquals(123.456, amount.getAsDouble());
+
+   }
+
+   public void testCreateStringBased() throws Exception {
+
+	 // For US locale
+	 CurrencyAmount amount = new CurrencyAmount("$25.46", Locale.US);
+	 assertEquals(25.46, amount.getAsDouble());
+
+	 // For French locale
+	 amount = new CurrencyAmount("£25.46", Locale.UK);
+	 assertEquals(25.46, amount.getAsDouble());
+
+	 // For German locale
+	 amount = new CurrencyAmount("25,46€", Locale.GERMANY);
+	 assertEquals(25.46, amount.getAsDouble());
+
+	 // For French locale
+	 amount = new CurrencyAmount("25,46€", Locale.FRANCE);
+	 assertEquals(25.46, amount.getAsDouble());
 
    }
 
