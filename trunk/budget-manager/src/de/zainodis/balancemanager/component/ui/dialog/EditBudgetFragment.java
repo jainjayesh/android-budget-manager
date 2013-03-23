@@ -48,7 +48,7 @@ import de.zainodis.commons.utils.StringUtils;
  * @author zainodis
  * 
  */
-public class EditBudgetFragment extends BudgetBase {
+public class EditBudgetFragment extends BudgetBaseFragment {
 
    public static final String TAG = EditBudgetFragment.class.getName();
 
@@ -174,6 +174,10 @@ public class EditBudgetFragment extends BudgetBase {
 	    // Save the new cycle
 	    BudgetCycle newCycle = new BudgetCycle(start.getTime());
 	    assertTrue("Failed to save new budget cycle.", new BudgetCyclePersister().save(newCycle));
+	    // Update Budget amount
+	    updateBudgetAmount();
+	    // Refresh entries
+	    updateEntries();
 	 }
    };
 

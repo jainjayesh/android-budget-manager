@@ -16,7 +16,7 @@ import de.zainodis.balancemanager.model.persistence.BudgetCyclePersister;
 import de.zainodis.balancemanager.model.persistence.EntryDao;
 import de.zainodis.balancemanager.model.persistence.EntryPersister;
 
-public abstract class BudgetBase extends SherlockFragment {
+public abstract class BudgetBaseFragment extends SherlockFragment {
 
    public static final String TAG = "BudgetBase";
 
