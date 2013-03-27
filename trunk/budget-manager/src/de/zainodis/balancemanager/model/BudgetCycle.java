@@ -86,11 +86,14 @@ public class BudgetCycle {
    }
 
    /**
+    * @param locale
+    *           the {@link Locale} based on which the currency amount is
+    *           created.
     * @return an instance of {@link CurrencyAmount} initialised to zero with the
     *         locale of this {@link BudgetCycle}.
     */
-   public CurrencyAmount createEmptyCurrency() {
-	 return new CurrencyAmount(0, getLocale());
+   public CurrencyAmount createEmptyCurrency(Locale locale) {
+	 return new CurrencyAmount(0, locale);
    }
 
    /**
