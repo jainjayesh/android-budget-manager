@@ -28,15 +28,18 @@ public class LocaleOption extends Option<Locale> {
 
    @Override
    protected Locale parse(String value) {
-	 /*
-	  * We expect the serialised locale and a language that goes with the
-	  * locale. The language is required to re-create the locale. The language
-	  * is expected first, then the country.
-	  */
-	 String[] localeData = value.split(DIVIDER);
-	 assertEquals("To create a locale, the language and country are required.", 2,
-		  localeData.length);
-	 return new Locale(localeData[0], localeData[1]);
+	 if (value != null && !StringUtils.EMPTY.equals(value)) {
+	    /*
+	     * We expect the serialised locale and a language that goes with the
+	     * locale. The language is required to re-create the locale. The
+	     * language is expected first, then the country.
+	     */
+	    String[] localeData = value.split(DIVIDER);
+	    assertEquals("To create a locale, the language and country are required.", 2,
+			localeData.length);
+	    return new Locale(localeData[0], localeData[1]);
+	 }
+	 return Locale.getDefault();
    }
 
    @Override

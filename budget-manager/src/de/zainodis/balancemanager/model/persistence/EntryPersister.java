@@ -132,8 +132,9 @@ public class EntryPersister extends Persister<EntryDao> {
    public CurrencyAmount getCurrentBudget() {
 	 // TODO optimise using SUM raw query
 	 BudgetCycle cycle = new BudgetCyclePersister().getActiveCycle();
+	 LocaleComponent locale = Application.getInstance().getComponent(LocaleComponent.class);
 	 if (cycle != null) {
-	    CurrencyAmount result = cycle.createEmptyCurrency();
+	    CurrencyAmount result = cycle.createEmptyCurrency(locale.getLocale());
 	    Collection<Entry> entries = getFilteredEntries(cycle, EntryFilter.ALL,
 			EntrySort.BY_CATEGORY);
 
@@ -147,7 +148,6 @@ public class EntryPersister extends Persister<EntryDao> {
 	    return result;
 	 } else {
 	    // Return the currency as zero with currently set locale
-	    LocaleComponent locale = Application.getInstance().getComponent(LocaleComponent.class);
 	    return new CurrencyAmount(0, locale.getLocale());
 	 }
    }
