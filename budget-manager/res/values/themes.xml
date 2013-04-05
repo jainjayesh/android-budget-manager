@@ -1,0 +1,8 @@
+<resources>
+
+    <style name="BalanceGnomeTheme" parent="Theme.Sherlock.Light">
+        <item name="android:dropDownItemStyle">@style/Widget.DropDownItemLight</item>
+        <item name="android:autoCompleteTextViewStyle">@style/Widget.AutoCompleteTextViewLight</item>
+    </style>
+
+</resources>

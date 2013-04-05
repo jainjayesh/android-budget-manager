@@ -6,14 +6,14 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="14" />
 
     <application
         android:name=".core.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock.Light" >
+        android:theme="@style/BalanceGnomeTheme" >
         <activity
             android:name=".component.ui.dialog.BudgetActivity"
             android:uiOptions="splitActionBarWhenNarrow" >
