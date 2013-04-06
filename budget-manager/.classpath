@@ -13,6 +13,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/BalanceManager/libs/ormlite-core-4.42-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/acra-4.4.0.jar"/>
 	<classpathentry kind="src" path="/zainodis-commons"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/action-bar-sherlock-4.2.0"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
