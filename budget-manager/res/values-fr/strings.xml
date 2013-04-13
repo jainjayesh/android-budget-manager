@@ -56,7 +56,8 @@
 	<string name="edit_categories">Editer les catégories</string>
 	<string name="new_category">Nouvelle catégorie...</string>
 	<string name="started_x">Date de %s</string>
-
+    <string name="about">Crédits</string>
+	
 	<string-array name="budget_sort">
 		<item>@string/category</item>
 		<item>@string/date</item>
