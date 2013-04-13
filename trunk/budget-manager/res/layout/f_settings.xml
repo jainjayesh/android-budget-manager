@@ -12,10 +12,15 @@
             android:id="@+id/a_settings_edit_categories"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:onClick="onEditCategories"
-            android:text="@string/edit_categories"
-            android:textSize="18sp" />
+            android:text="@string/edit_categories" />
+
+        <Button
+            android:id="@+id/a_settings_credits"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onEditCategories"
+            android:text="@string/about" />
     </LinearLayout>
 
 </ScrollView>

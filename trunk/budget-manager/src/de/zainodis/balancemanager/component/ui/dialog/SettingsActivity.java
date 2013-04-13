@@ -49,7 +49,7 @@ public class SettingsActivity extends SherlockFragmentActivity {
    public void onEditCategories(View requestedBy) {
 	 // TODO currently this simply replaces other fragments, change so it
 	 // adds depending on screen size
-	 Fragment fragment = SherlockFragment.instantiate(this, EditCategories.class.getName());
+	 Fragment fragment = SherlockFragment.instantiate(this, EditCategoriesFragment.class.getName());
 
 	 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 	 transaction.replace(R.id.fragment_container, fragment, TAG);

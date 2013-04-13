@@ -24,30 +24,36 @@ public class BudgetActivity extends SherlockFragmentActivity {
 
 	    if (savedInstanceState != null) {
 		  LogCat.i(TAG, "Created based on saved instance.");
-		  /*
-		   * ALWAYS update listener references, otherwise the references of
-		   * already dead activities may be called.
-		   */
-		  EditBudgetFragment fragment = (EditBudgetFragment) getSupportFragmentManager()
-			   .findFragmentByTag(TAG);
-		  fragment.setSettingsSelectedListener(onOpenSettings);
-		  fragment.setAddEntrySelectedListener(onAddEntry);
+		  // To avoid stale listeners
+		  updateListeners((EditBudgetFragment) getSupportFragmentManager().findFragmentByTag(TAG));
 		  // Prevents overlapping fragments
 		  return;
 	    }
 	    LogCat.i(TAG, "Created from scratch.");
 
 	    // Create an instance of ExampleFragment
-	    EditBudgetFragment firstFragment = new EditBudgetFragment();
+	    EditBudgetFragment fragment = new EditBudgetFragment();
 
 	    // Pass on possible intent extras
-	    firstFragment.setArguments(getIntent().getExtras());
+	    fragment.setArguments(getIntent().getExtras());
+
+	    // To avoid stale listeners
+	    updateListeners(fragment);
 
 	    // Add the fragment to the 'fragment_container' FrameLayout
-	    getSupportFragmentManager().beginTransaction()
-			.add(R.id.fragment_container, firstFragment, TAG).commit();
+	    getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fragment, TAG)
+			.commit();
 
 	 }
+   }
+
+   protected void updateListeners(EditBudgetFragment target) {
+	 /*
+	  * ALWAYS update listener references, otherwise the references of already
+	  * dead activities may be called.
+	  */
+	 target.setSettingsSelectedListener(onOpenSettings);
+	 target.setAddEntrySelectedListener(onAddEntry);
    }
 
    @Override
