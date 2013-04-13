@@ -9,6 +9,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import de.zainodis.balancemanager.R;
+import de.zainodis.commons.LogCat;
 
 public class BudgetActivity extends SherlockFragmentActivity {
 
@@ -19,26 +20,52 @@ public class BudgetActivity extends SherlockFragmentActivity {
 	 super.onCreate(savedInstanceState);
 	 setContentView(getLayoutInflater().inflate(R.layout.a_fragment_container, null));
 
-	 // Add settings fragment if this activity starts for the first time
 	 if (findViewById(R.id.fragment_container) != null) {
 
 	    if (savedInstanceState != null) {
+		  LogCat.i(TAG, "Created based on saved instance.");
+		  /*
+		   * ALWAYS update listener references, otherwise the references of
+		   * already dead activities may be called.
+		   */
+		  EditBudgetFragment fragment = (EditBudgetFragment) getSupportFragmentManager()
+			   .findFragmentByTag(TAG);
+		  fragment.setSettingsSelectedListener(onOpenSettings);
+		  fragment.setAddEntrySelectedListener(onAddEntry);
 		  // Prevents overlapping fragments
 		  return;
 	    }
+	    LogCat.i(TAG, "Created from scratch.");
 
 	    // Create an instance of ExampleFragment
 	    EditBudgetFragment firstFragment = new EditBudgetFragment();
 
 	    // Pass on possible intent extras
 	    firstFragment.setArguments(getIntent().getExtras());
-	    firstFragment.setSettingsSelectedListener(onOpenSettings);
-	    firstFragment.setAddEntrySelectedListener(onAddEntry);
 
 	    // Add the fragment to the 'fragment_container' FrameLayout
 	    getSupportFragmentManager().beginTransaction()
 			.add(R.id.fragment_container, firstFragment, TAG).commit();
+
 	 }
+   }
+
+   @Override
+   protected void onSaveInstanceState(Bundle outState) {
+	 super.onSaveInstanceState(outState);
+	 LogCat.i(TAG, "Instance has been saved.");
+   }
+
+   @Override
+   protected void onPause() {
+	 super.onPause();
+	 LogCat.i(TAG, "has been paused.");
+   }
+
+   @Override
+   protected void onDestroy() {
+	 super.onDestroy();
+	 LogCat.i(TAG, "has been destroyed.");
    }
 
    /**
