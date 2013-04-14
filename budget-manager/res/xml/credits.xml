@@ -1,10 +1,11 @@
 <credits>
 
-    <category name="Icons" >
-        <entry name="Launcher icon basiert auf Icons von VisualPharm" />
-        <entry name="In der Anwendung verwendete Icons sind von Joseph North und SerNet" />
+    <category name="@string/icons" >
+        <entry name="VisualPharm" />
+        <entry name="Joseph North" />
+        <entry name="SerNet" />
     </category>
-    <category name="Tester" >
+    <category name="@string/testers" >
         <entry name="Rosi" />
         <entry name="Jenny" />
     </category>

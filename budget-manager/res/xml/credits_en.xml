@@ -4,8 +4,9 @@
         <entry name="Launcher icon based on icons from VisualPharm" />
         <entry name="Application icons from Joseph North and SerNet" />
     </category>
-    <category name="Testing" >
-        <entry name="Many thanks to Rosi for volunteering to be my first tester" />
+    <category name="Tester" >
+        <entry name="Rosi" />
+        <entry name="Jenny" />
     </category>
 
 </credits>

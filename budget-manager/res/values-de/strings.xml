@@ -57,6 +57,8 @@
     <string name="started_x">Begann am %s</string>
     <string name="sending_crash_report">Ein Fehlerbericht wurde erstellt und wird an den zuständigen Entwickler weitergeleitet.</string>
     <string name="about">Impressum</string>
+    <string name="icons">Icons</string>
+    <string name="testers">Tester/innen</string>
     
     <string-array name="budget_sort">
         <item>@string/category</item>
