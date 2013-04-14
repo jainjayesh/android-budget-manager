@@ -25,7 +25,10 @@ public class BudgetActivity extends SherlockFragmentActivity {
 	    if (savedInstanceState != null) {
 		  LogCat.i(TAG, "Created based on saved instance.");
 		  // To avoid stale listeners
-		  updateListeners((EditBudgetFragment) getSupportFragmentManager().findFragmentByTag(TAG));
+		  Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG);
+		  if (fragment != null && fragment instanceof EditBudgetFragment) {
+			updateListeners((EditBudgetFragment) fragment);
+		  }
 		  // Prevents overlapping fragments
 		  return;
 	    }
