@@ -1,31 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<release-notes version="1.0.6">
-
-	<release version="1.0.6">
-		<item text="Unter Einstellungen gibt es nun die Optione Kategorien Bearbeiten, welche vorhandene Kategorien anzeigt. Diese kann man löschen oder neue Kategorien hinzufügen."/>			
-	</release>
-
-	<release version="1.0.5">
-		<item text="Tabs Navigation wurde durch ActionBar ersetzt."/>		
-		<item text="Die Budgetgruppe beinhaltet nun auch die Gesamtsumme."/>		
-	</release>
-
-	<release version="1.0.4">
-		<item text="Beim Anlegen neuer Gruppen werden nun Leerzeichen am Anfang und Ende des Wortes entfernt."/>		
-		<item text="Die Vorschlagsliste wurde optisch verbessert und poppt nun nicht mehr direkt ins Bild wenn sich der Editierdialog öffnet."/>		
-		<item text="das Betragsfeld besteht nun aus zwei Teilen, im ersten Teil wird die Vorkommastelle angegeben, im anderen die Nachkommastelle."/>		
-	</release>
-
-	<release version="1.0.3">
-		<item text="Komplette Überarbeitung des Benutzerinterfaces."/>		
-	</release>
-
-	<release version="1.0.2">
-		<item text="Fehler korrigiert, der dazu führte, das bei einem neuen Zyklus nicht nur die monatlichen Positionen, sondern auch die einmaligen Positionen übernommen wurde."/>		
-	</release>
-
-	<release version="1.0.1">
-		<item text="Wird die Anwendung ohne laufenden Budget Zyklus gestartet, werden Sie entsprechend aufgefordert, diesen zuerst zu starten. Der Wechsel zur Budgetübersicht ist erst möglich, wenn es einen aktiven Budgetzyklus gibt."/>		
-	</release>
+<release-notes version="1.0.0">
 
 </release-notes>
