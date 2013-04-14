@@ -58,6 +58,8 @@
     <string name="started_x">Started on %s</string>
     <string name="sending_crash_report">A crash report has been created and will be send to the responsible developer.</string>
     <string name="about">About</string>
+    <string name="icons">Icons</string>
+    <string name="testers">Testers</string>
     
     <string-array name="budget_sort">
         <item>@string/category</item>

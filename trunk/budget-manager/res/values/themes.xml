@@ -1,7 +1,8 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="BalanceGnomeTheme" parent="Theme.Sherlock.Light">
         <item name="android:dropDownItemStyle">@style/Widget.DropDownItemLight</item>
+        <item name="android:textViewStyle">@style/TextViewOrange</item>
         <item name="android:editTextStyle">@style/EditTextOrange</item>
         <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteTextViewOrange</item>
         <item name="android:checkboxStyle">@style/CheckBoxOrange</item>

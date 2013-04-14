@@ -17,6 +17,10 @@ import de.zainodis.balancemanager.R;
  * @author fzarrai
  * 
  */
+/*
+ * TODO currently this simply replaces other fragments, change so it adds
+ * depending on screen size.
+ */
 public class SettingsActivity extends SherlockFragmentActivity {
 
    private static final String TAG = SettingsActivity.class.getName();
@@ -47,9 +51,19 @@ public class SettingsActivity extends SherlockFragmentActivity {
    }
 
    public void onEditCategories(View requestedBy) {
-	 // TODO currently this simply replaces other fragments, change so it
-	 // adds depending on screen size
-	 Fragment fragment = SherlockFragment.instantiate(this, EditCategoriesFragment.class.getName());
+
+	 Fragment fragment = SherlockFragment
+		  .instantiate(this, EditCategoriesFragment.class.getName());
+
+	 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+	 transaction.replace(R.id.fragment_container, fragment, TAG);
+	 transaction.addToBackStack(null);
+	 transaction.commit();
+
+   }
+
+   public void onViewAbout(View requestedBy) {
+	 Fragment fragment = SherlockFragment.instantiate(this, AboutFragment.class.getName());
 
 	 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 	 transaction.replace(R.id.fragment_container, fragment, TAG);
