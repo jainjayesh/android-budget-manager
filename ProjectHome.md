@@ -1,0 +1,1 @@
+An android application, that helps you keeping track of your monthly budget.
